@@ -1,0 +1,8 @@
+TiddlyMarker is a handy and flexible tool for bookmarking pages to TiddlyWiki
+from the browser. Specify any arbitrary format, and save or send a tiddler with
+the press of a single button.
+
+To test (currently only Firefox):
+- Enter about:debugging
+- Click "Load Temporary Add-on..."
+- Select any file within this directory, such as background.js

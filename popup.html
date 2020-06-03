@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>TiddlyMarker Popup</title>
+		<meta charset="utf-8">
+		<style>
+			img[src="icons/64.png"] {
+				width: 32px;
+				height: 32px;
+			}
+			img[alt="Favicon"] {
+				margin-right: .618ch;
+			}
+			/* don't ask why the browser_style examples are made of lies */
+			.panel-section-footer-button {
+				border-width: 0px;
+			}
+			.reexpand {
+				margin: -16px -16px 16px -16px;
+				padding: 4px 8px;
+				font-size: 0.8em;
+			}
+			.bar {
+				background-color: #F00D;
+				font-weight: bold;
+				text-transform: uppercase;
+			}
+			.barsub {
+				background-color: #F006;
+			}
+			#warning {
+				background-color: #FB06;
+			}
+			.panel {
+				min-width: 480px;
+			}
+			pre {
+				margin-top: 0px;
+				margin-bottom: 0px;
+			}
+			.dnd {
+				display: none;
+			}
+			.icon-section-header.bep {
+				float: right;
+			}
+			[disabled] {
+				pointer-events: none;
+				opacity: 0.8;
+				color: #999;
+			}
+			.ghost > img {
+				image-rendering: pixelated;
+				image-rendering: -moz-crisp-edges;
+				image-rendering: crisp-edges;
+				width: 16px;
+				height: 16px;
+				opacity: 0.8;
+				display: block;
+			}
+			.ghost {
+				position: absolute;
+				padding: 8px 8px 8px 8px;
+				margin-right: 16px;
+				right: 0;
+				border-radius: 4px;
+				border: 0;
+				background-color: transparent;
+			}
+			.ghost:hover {
+				background-color: rgba(12, 12, 13, 0.1);
+			}
+			.ghost:active {
+				background-color: rgba(12, 12, 13, 0.2);
+			}
+			.ghost:focus {
+				box-shadow: 0 0 0 1px #0a84ff inset, 0 0 0 1px #0a84ff, 0 0 0 4px rgba(10, 132, 255, 0.3)
+			}
+		</style>
+	</head>
+	<body>
+		<div class="panel">
+			<header class="panel-section panel-section-header">
+				<div class="icon-section-header"><img src="icons/64.png" alt="TiddlyMarker Logo"></div>
+				<div class="text-section-header">TiddlyMarker</div>
+				<button class="ghost" id="settings"><img src="icons/settings.png"></button>
+			</header>
+			<section class="panel-section panel-section-formElements">
+				<div id="errortitle" class="panel-formElements-item reexpand bar dnd">
+					<span></span>
+				</div>
+				<div id="reason" class="panel-formElements-item reexpand barsub dnd">
+					<span></span>
+				</div>
+				<div id="details" class="panel-formElements-item reexpand barsub dnd">
+					<pre></pre>
+				</div>
+				<div id="advice" class="panel-formElements-item reexpand barsub dnd">
+					<span></span>
+				</div>
+				<div id="warning" class="panel-formElements-item reexpand barsub dnd">
+					<span></span>
+				</div>
+				
+				<div class="panel-formElements-item">
+					<img id="icon" src="icons/no_favicon.png" alt="Favicon" width=16 height=16>
+					<span id="rawtitle"><span style="opacity: 0.5">[site title]</span></span>
+				</div>
+				<div class="panel-formElements-item">
+					<label for="url">URL:</label>
+					<input type="text" value="" id="url" />
+				</div>
+				<div class="panel-formElements-item">
+					<label for="title">Tiddler Title:</label>
+					<input type="text" value="" id="title" />
+				</div>
+			</section>
+			<footer class="panel-section panel-section-footer">
+				<button id="cancel" class="panel-section-footer-button">Cancel</button>
+				<div class="panel-section-footer-separator"></div>
+				<button id="download" class="panel-section-footer-button dnd">Download</button>
+				<div id="download_sep" class="panel-section-footer-separator dnd"></div>
+				<button id="go" disabled class="panel-section-footer-button default">Bookmark</button>
+			</footer>
+		</div>
+		<script src="storage.js"></script>
+		<script src="util.js"></script>
+		<script src="tabs.js"></script>
+		<script src="popup.js"></script>
+	</body>
+</html>

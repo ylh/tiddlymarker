@@ -1,0 +1,41 @@
+{
+	"manifest_version": 2,
+	"name": "TiddlyMarker",
+	"version": "0.1.0",
+
+	"description": "Bookmarks a page to TiddlyWiki",
+
+	"permissions": ["<all_urls>", "tabs", "webRequest", "storage", "alarms", "downloads"],
+	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';",
+	"icons": {
+		"48": "icons/48.png",
+		"96": "icons/96.png"
+	},
+
+	"background": {
+		"page": "background.html",
+		"persistent": true
+	},
+
+	"options_ui": {
+
+		"page": "options.html",
+		"open_in_tab": true
+	},
+
+	"browser_action": {
+		"default_icon": {
+			"19": "icons/19.png",
+			"38": "icons/38.png"
+		},
+		"default_title": "Bookmark to TW",
+		"default_popup": "popup.html",
+		"browser_style": true
+	},
+
+	"applications": {
+		"gecko": {
+			"id": "tiddlymarker@ylh.io"
+		}
+	}
+}
