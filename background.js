@@ -1,15 +1,12 @@
-/* this is some particularly spicy garbage. tl;dr we can't await anything in the
+/* this object is a particularly ugly hack. tl;dr we can't await anything in the
    user input handler if we hope to call openPopup(), which is rather crucial
    to the whole “conditional popup” “quick mode” *thing*. so, instead of
-   accessing the appropriate storage in the input handler, we close over these
-   globals in the storage update handlers for local.state and sync.quickmode.
+   accessing the appropriate storage in the input handler, we close over this
+   global in the storage update handlers for local.state and sync.quickmode.
    we fire off some fake updates to the values to make sure those closures run,
    then in the input handler we use these globals and pretend we've accessed
-   storage.
-
-   with any luck once this addon is stable i will never write another line of
-   this hideous language as long as i live */
-let st, qm;
+   storage. as a result, the API gains the illusion of orthogonality */
+let storage_cache = {};
 
 const popup_able = b => browser.browserAction.setPopup({popup: b ? null : ""});
 
@@ -36,8 +33,8 @@ const catch_bookmark = async () => {
 const do_bookmark = async () => {
 	const prefs = await browser.storage.sync.get(defaults.sync),
 	      local = await browser.storage.local.get(Object.keys(defaults.local)),
-	      bm = await browser.storage.local.get(Object.keys(tab_reads)),
-	      {rawtitle, title, url, icon} = bm;
+	      bookmark = await browser.storage.local.get(Object.keys(tab_reads)),
+	      {rawtitle, title, url, icon} = bookmark;
 	let ffo, bfo;
 	if (icon !== undefined) {
 		try {
@@ -308,12 +305,12 @@ const sends = {
 const handler_tree = {
 	sync: {
 		quickmode: (changes, change) => {
-			qm = change.newValue;
+			storage_cache.quickmode = change.newValue;
 		}
 	},
 	local: {
 		state: (changes, change) => {
-			let nv = st = change.newValue;
+			let nv = storage_cache.state = change.newValue;
 			badge({
 				ready: {text: "", fg: null, bg: null},
 				unfinished: {text: "!", fg: "white", bg: "#F80B"},
@@ -344,7 +341,7 @@ browser.storage.onChanged.addListener((changes, area) => {
 	}
 });
 browser.browserAction.onClicked.addListener(() => {
-	switch (st) {
+	switch (storage_cache.state) {
 	case "unfinished":
 		break;
 	case "working":
@@ -352,16 +349,16 @@ browser.browserAction.onClicked.addListener(() => {
 	case "failure":
 		break;
 	case "done":
-		st = "ready"; /* so as to avoid waiting on an async */
+		storage_cache.state = "ready"; /* so as to avoid waiting on an async */
 		browser.storage.local.set({state: "ready"});
 	case "ready":
-		if (!qm)
+		if (!storage_cache.quickmode)
 			break;
 		(async () => {
 			await Promise.all(Object.keys(tab_reads).map(
 				tab_read(await current_tab())
 			));
-			st = "working";
+			storage_cache.state = "working";
 			browser.storage.local.set({state: "working"});
 		})();
 		return;
@@ -372,7 +369,7 @@ browser.browserAction.onClicked.addListener(() => {
 	popup_able(false);
 });
 browser.alarms.onAlarm.addListener(info => {
-	if (info.name === "done" && st === "done")
+	if (info.name === "done" && storage_cache.state === "done")
 		browser.storage.local.set({state: "ready"});
 });
 popup_able(false);
