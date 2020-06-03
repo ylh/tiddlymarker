@@ -1,3 +1,5 @@
+'use strict';
+
 const defaults = {
 	sync: {
 		quickmode: false,

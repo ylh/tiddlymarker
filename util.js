@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const do_you_even = (obj, level, ...rest) => {
 	if (obj === undefined)

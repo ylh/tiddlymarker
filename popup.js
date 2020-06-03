@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const unfinish = async () => browser.storage.local.set({state: "unfinished"});
 let proper_finish = () => {};

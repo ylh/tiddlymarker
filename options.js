@@ -1,3 +1,5 @@
+'use strict';
+
 const value_field = elem => elem.type === 'checkbox' ? "checked" : "value";
 const populate = (elem, v) => elem[value_field(elem)] = v;
 const readfrom = elem => elem[value_field(elem)];

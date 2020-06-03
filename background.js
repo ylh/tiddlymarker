@@ -1,3 +1,5 @@
+'use strict';
+
 /* this object is a particularly ugly hack. tl;dr we can't await anything in the
    user input handler if we hope to call openPopup(), which is rather crucial
    to the whole “conditional popup” “quick mode” *thing*. so, instead of
@@ -35,6 +37,7 @@ const do_bookmark = async () => {
 	      bookmark = await browser.storage.local.get(Object.keys(tab_reads)),
 	      {rawtitle, title, url, icon} = bookmark;
 	let favicon_fmt_out, bookmark_fmt_out;
+
 	if (icon !== undefined) {
 		try {
 			favicon_fmt_out = (eval(`({data, hash, mime, datauri, ext}) => {
@@ -83,8 +86,8 @@ const send_bookmark = async (prefs, bookmark_fmt_out, favicon_fmt_out) => {
 		}
 		return tiddler;
 	};
-
 	let bookmark_sanity = sanity(bookmark_fmt_out);
+
 	if (bookmark_sanity !== null) {
 		return {
 			errortitle: "FORMAT ERROR",
@@ -93,7 +96,6 @@ const send_bookmark = async (prefs, bookmark_fmt_out, favicon_fmt_out) => {
 		};
 	}
 	bookmark_fmt_out = merge(prefs.savingmode, bookmark_fmt_out);
-
 	if (prefs.favicon_separate && favicon_fmt_out !== undefined) {
 		let favicon_sanity = sanity(favicon_fmt_out);
 		if (favicon_sanity !== null) {
