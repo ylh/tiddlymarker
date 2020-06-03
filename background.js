@@ -40,9 +40,10 @@ const do_bookmark = async () => {
 
 	if (icon !== undefined) {
 		try {
-			favicon_fmt_out = (eval(`({data, hash, mime, datauri, ext}) => {
-				${prefs.favicon_fmt}
-			}`))(icon);
+			let {data, hash, mime, datauri, ext} = icon;
+			favicon_fmt_out = (new Function('data,hash,mime,datauri,ext',
+				prefs.favicon_fmt
+			))(data, hash, mime, datauri, ext);
 		} catch (e) {
 			return {
 				errortitle: "FORMAT ERROR",
@@ -52,9 +53,9 @@ const do_bookmark = async () => {
 		}
 	}
 	try {
-		bookmark_fmt_out = (eval(`(rawtitle, title, url, icon) => {
-			${prefs.bookmark_fmt}
-		}`))(rawtitle, title, url, favicon_fmt_out);
+		bookmark_fmt_out = (new Function('rawtitle,title,url,icon',
+			prefs.bookmark_fmt
+		))(rawtitle, title, url, favicon_fmt_out);
 	} catch (e) {
 		return {
 			errortitle: "FORMAT ERROR",
@@ -381,7 +382,7 @@ popup_able(false);
 	}
 	if (await local_of("state") === "working")
 		browser.storage.local.set({
-			state: error,
+			state: "failure",
 			error: {
 				errortitle: "INTERRUPTED",
 				details: "Browser quit while saving bookmark"
