@@ -36,14 +36,19 @@ const do_bookmark = async () => {
 	const prefs = await browser.storage.sync.get(defaults.sync),
 	      bookmark = await browser.storage.local.get(Object.keys(tab_reads)),
 	      {rawtitle, title, url, icon} = bookmark;
+	const arg = s => `"${s.replace(/"/g, '\\\"')}"`;
 	let favicon_fmt_out, bookmark_fmt_out;
 
 	if (icon !== undefined) {
 		try {
 			let {data, hash, mime, datauri, ext} = icon;
-			favicon_fmt_out = (new Function('data,hash,mime,datauri,ext',
-				prefs.favicon_fmt
-			))(data, hash, mime, datauri, ext);
+			/* a content script is a makeshift eval sandbox */
+			favicon_fmt_out = (await browser.tabs.executeScript({
+				code: `((data, hash, mime, datauri, ext) => {
+					${prefs.favicon_fmt}
+				})(${arg(data)}, ${arg(hash)}, ${arg(mime)}, ${arg(datauri)},
+				   ${arg(ext)})`
+			}))[0];
 		} catch (e) {
 			return {
 				errortitle: "FORMAT ERROR",
@@ -53,9 +58,12 @@ const do_bookmark = async () => {
 		}
 	}
 	try {
-		bookmark_fmt_out = (new Function('rawtitle,title,url,icon',
-			prefs.bookmark_fmt
-		))(rawtitle, title, url, favicon_fmt_out);
+		bookmark_fmt_out = (await browser.tabs.executeScript({
+			code: `((rawtitle, title, url, icon) => {
+				${prefs.bookmark_fmt}
+			})(${arg(rawtitle)}, ${arg(title)}, ${arg(url)},
+			   JSON.parse(${arg(JSON.stringify(favicon_fmt_out))}))`
+		}))[0];
 	} catch (e) {
 		return {
 			errortitle: "FORMAT ERROR",

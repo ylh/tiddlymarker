@@ -6,7 +6,6 @@
 	"description": "Bookmarks a page to TiddlyWiki",
 
 	"permissions": ["<all_urls>", "tabs", "webRequest", "storage", "alarms", "downloads"],
-	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';",
 	"icons": {
 		"48": "icons/48.png",
 		"96": "icons/96.png"
