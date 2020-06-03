@@ -32,13 +32,12 @@ const catch_bookmark = async () => {
 
 const do_bookmark = async () => {
 	const prefs = await browser.storage.sync.get(defaults.sync),
-	      local = await browser.storage.local.get(Object.keys(defaults.local)),
 	      bookmark = await browser.storage.local.get(Object.keys(tab_reads)),
 	      {rawtitle, title, url, icon} = bookmark;
-	let ffo, bfo;
+	let favicon_fmt_out, bookmark_fmt_out;
 	if (icon !== undefined) {
 		try {
-			ffo = (eval(`({data, hash, mime, datauri, ext}) => {
+			favicon_fmt_out = (eval(`({data, hash, mime, datauri, ext}) => {
 				${prefs.favicon_fmt}
 			}`))(icon);
 		} catch (e) {
@@ -50,9 +49,9 @@ const do_bookmark = async () => {
 		}
 	}
 	try {
-		bfo = (eval(`(rawtitle, title, url, icon) => {
+		bookmark_fmt_out = (eval(`(rawtitle, title, url, icon) => {
 			${prefs.bookmark_fmt}
-		}`))(rawtitle, title, url, ffo);
+		}`))(rawtitle, title, url, favicon_fmt_out);
 	} catch (e) {
 		return {
 			errortitle: "FORMAT ERROR",
@@ -60,10 +59,10 @@ const do_bookmark = async () => {
 			advice: "Make sure <code>bookmark_fmt</code> is well-formed."
 		};
 	}
-	return send_bookmark(prefs, local, bfo, ffo);
+	return send_bookmark(prefs, bookmark_fmt_out, favicon_fmt_out);
 };
 
-const send_bookmark = async (prefs, local, bfo, ffo) => {
+const send_bookmark = async (prefs, bookmark_fmt_out, favicon_fmt_out) => {
 	const sanity = result => {
 		if (do_you_even(result, "fields")) {
 			const {fields, ...rest} = result;
@@ -85,29 +84,29 @@ const send_bookmark = async (prefs, local, bfo, ffo) => {
 		return tiddler;
 	};
 
-	let bfs = sanity(bfo);
-	if (bfs !== null) {
+	let bookmark_sanity = sanity(bookmark_fmt_out);
+	if (bookmark_sanity !== null) {
 		return {
 			errortitle: "FORMAT ERROR",
-			reason: bfs,
+			reason: bookmark_sanity,
 			advice: "Correct <code>bookmark_fmt</code> accordingly."
 		};
 	}
-	bfo = merge(prefs.savingmode, bfo);
+	bookmark_fmt_out = merge(prefs.savingmode, bookmark_fmt_out);
 
-	if (prefs.favicon_separate && ffo !== undefined) {
-		let ffs = sanity(ffo);
-		if (ffs !== null) {
+	if (prefs.favicon_separate && favicon_fmt_out !== undefined) {
+		let favicon_sanity = sanity(favicon_fmt_out);
+		if (favicon_sanity !== null) {
 			return {
 				errortitle: "FORMAT ERROR",
-				reason: ffs,
+				reason: favicon_sanity,
 				advice: "Correct <code>favicon_fmt</code> accordingly."
 			};
 		}
-		ffo = merge(prefs.savingmode, ffo);
+		favicon_fmt_out = merge(prefs.savingmode, favicon_fmt_out);
 	}
 
-	return sends[prefs.savingmode](prefs, local, bfo, ffo);
+	return sends[prefs.savingmode](prefs, bookmark_fmt_out, favicon_fmt_out);
 };
 
 const tiddler_blob = tiddlers => new Blob([
@@ -184,37 +183,37 @@ const check_tiddler = (resolve, reject, prefs, tiddler, desc, ex, ne) => {
 };
 
 const sends = {
-	download: async (prefs, local, bfo, ffo) => {
-		let tiddlers = (ffo !== undefined) ? [bfo, ffo] : ffo,
-		    url = URL.createObjectURL(tiddler_blob(tiddlers)),
-		    ret = null;
+	download: async (prefs, bookmark, favicon) => {
+		let tiddlers = (favicon !== undefined) ? [bookmark, favicon] : favicon,
+		    url = URL.createObjectURL(tiddler_blob(tiddlers));
 
 		try {
 			let id = await browser.downloads.download({
 				url: url,
 				saveAs: true,
-				filename: `${bfo.title.replace(/[^A-Za-z0-9._-]/g, "_")}.json`
+				filename: bookmark.title.replace(/[^A-Za-z0-9._-]/g, "_")
+				        + ".json"
 			});
-			let d2s = delta => {
+			let revoker = delta => {
 				if (delta.id === id && delta.state.current === "complete") {
-					browser.downloads.onChanged.removeListener(d2s);
+					browser.downloads.onChanged.removeListener(revoker);
 					URL.revokeObjectURL(url);
 				}
 			};
 
-			browser.downloads.onChanged.addListener(d2s);
+			browser.downloads.onChanged.addListener(revoker);
 		} catch (e) {
 			URL.revokeObjectURL(url);
-			ret = {
+			return {
 				errortitle: "DOWNLOAD INTERRUPTED",
 				details: e.toString(),
 				advice: "Try again."
 			};
 		}
 
-		return ret;
+		return null;
 	},
-	webserver: (prefs, local, bfo, ffo) => new Promise((resolve, reject) => {
+	webserver: (prefs, bookmark, favicon) => new Promise((resolve, reject) => {
 		const badurl = (s, a = "Correct the server address accordingly") =>
 			reject({
 				errortitle: "CONFIGURATION ERROR",
@@ -249,6 +248,7 @@ const sends = {
 		return resolve(null);
 	}).then(_ => new Promise((resolve, reject) => {
 		let getstatus = prefab_xhr(reject, "get server status");
+
 		getstatus.responseType = "json";
 		authopen(getstatus, prefs, 'GET', `${prefs.address}/status`);
 		getstatus.onload = function(_e) {
@@ -270,16 +270,16 @@ const sends = {
 			});
 		};
 		getstatus.send();
-	})).then(_ => new Promise((resolve, reject) => ffo === undefined
+	})).then(_ => new Promise((resolve, reject) => favicon === undefined
 		? resolve(false)
 		: check_tiddler(
-			resolve, reject, prefs, ffo, "favicon",
+			resolve, reject, prefs, favicon, "favicon",
 			() => resolve(false),
 			() => resolve(true)
 		)
 	)).then(do_fav => new Promise((resolve, reject) =>
 		check_tiddler(
-			resolve, reject, prefs, bfo, "bookmark",
+			resolve, reject, prefs, bookmark, "bookmark",
 			() => reject({
 				errortitle: "REFUSING TO SAVE",
 				details: "Bookmark with title already exists"
@@ -287,15 +287,15 @@ const sends = {
 			() => resolve(do_fav)
 		)
 	)).then(do_fav => new Promise((resolve, reject) => do_fav
-		? put_tiddler(resolve, reject, prefs, ffo, "favicon")
+		? put_tiddler(resolve, reject, prefs, favicon, "favicon")
 		: resolve(null)
 	)).then(_ => new Promise((resolve, reject) =>
-		put_tiddler(resolve, reject, prefs, bfo, "bookmark")
+		put_tiddler(resolve, reject, prefs, bookmark, "bookmark")
 	)).catch(e => e.hasOwnProperty("errortitle") ? e : {
 		errortitle: "UNKNOWN ERROR",
 		details: e.toString()
 	})/*,
-	tabover: (prefs, local, bfo, ffo) => new Promise((resolve, reject) => {
+	tabover: (prefs, bookmark, favicon) => new Promise((resolve, reject) => {
 
 	})*/
 };
