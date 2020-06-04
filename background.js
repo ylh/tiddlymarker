@@ -58,11 +58,13 @@ const do_bookmark = async () => {
 		}
 	}
 	try {
+		let iconarg = icon === undefined
+			? "undefined"
+			: `JSON.parse(${arg(JSON.stringify(favicon_fmt_out))})`;
 		bookmark_fmt_out = (await browser.tabs.executeScript({
 			code: `((rawtitle, title, url, icon) => {
 				${prefs.bookmark_fmt}
-			})(${arg(rawtitle)}, ${arg(title)}, ${arg(url)},
-			   JSON.parse(${arg(JSON.stringify(favicon_fmt_out))}))`
+			})(${arg(rawtitle)}, ${arg(title)}, ${arg(url)}, ${iconarg})`
 		}))[0];
 	} catch (e) {
 		return {
@@ -71,6 +73,7 @@ const do_bookmark = async () => {
 			advice: "Make sure <code>bookmark_fmt</code> is well-formed."
 		};
 	}
+
 	return send_bookmark(prefs, bookmark_fmt_out, favicon_fmt_out);
 };
 
@@ -195,7 +198,7 @@ const check_tiddler = (resolve, reject, prefs, tiddler, desc, ex, ne) => {
 
 const sends = {
 	download: async (prefs, bookmark, favicon) => {
-		let tiddlers = (favicon !== undefined) ? [bookmark, favicon] : favicon,
+		let tiddlers = (favicon !== undefined) ? [bookmark, favicon] : bookmark,
 		    url = URL.createObjectURL(tiddler_blob(tiddlers));
 
 		try {
