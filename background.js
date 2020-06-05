@@ -41,7 +41,10 @@ const do_bookmark = async () => {
 	const prefs = await browser.storage.sync.get(defaults.sync),
 	      bookmark = await browser.storage.local.get(Object.keys(tab_reads)),
 	      {rawtitle, title, url, icon} = bookmark;
-	const arg = str => `"${str.replace(/"/g, '\\\"')}"`;
+	/* if i were getting weird edge cases i would simply escape everything */
+	const arg = str => `"${str.split("").map(c =>
+		`\\u${`0000${c.charCodeAt(0).toString(16).toUpperCase()}`.slice(-4)}`
+	).join("")}"`;
 	const creation_error = (error, field) =>
 		error.message.startsWith("Missing host permission") ? {
 			errortitle: browser.i18n.getMessage("permissionErrorTitle"),
