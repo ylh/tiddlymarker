@@ -3,9 +3,12 @@
 	"name": "TiddlyMarker",
 	"version": "0.1.0",
 
-	"description": "Bookmarks a page to TiddlyWiki",
+	"default_locale": "en",
+	"description": "__MSG_extensionDescription__",
 
-	"permissions": ["<all_urls>", "tabs", "webRequest", "storage", "alarms", "downloads"],
+	"permissions": [
+		"<all_urls>", "tabs", "webRequest", "storage", "alarms", "downloads"
+	],
 	"icons": {
 		"48": "icons/48.png",
 		"96": "icons/96.png"
@@ -26,7 +29,7 @@
 			"19": "icons/19.png",
 			"38": "icons/38.png"
 		},
-		"default_title": "Bookmark to TW",
+		"default_title": "__MSG_browserActionHover__",
 		"default_popup": "popup.html",
 		"browser_style": true
 	},

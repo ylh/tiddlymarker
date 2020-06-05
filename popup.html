@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>TiddlyMarker Popup</title>
+		<title></title>
 		<meta charset="utf-8">
 		<style>
 			img[src="icons/64.png"] {
@@ -104,25 +104,24 @@
 				
 				<div class="panel-formElements-item">
 					<img id="icon" src="icons/no_favicon.png" alt="Favicon" width=16 height=16>
-					<span id="rawtitle"><span style="opacity: 0.5">[site title]</span></span>
+					<span id="rawtitle"><span style="opacity: 0.5" data-msg="siteTitlePlaceholder"></span></span>
 				</div>
 				<div class="panel-formElements-item">
-					<label for="url">URL:</label>
+					<label for="url" data-msg="popupUrlLabel"></label>
 					<input type="text" value="" id="url" />
 				</div>
 				<div class="panel-formElements-item">
-					<label for="title">Tiddler Title:</label>
+					<label for="title" data-msg="popupTiddlerTitleLabel"></label>
 					<input type="text" value="" id="title" />
 				</div>
 			</section>
 			<footer class="panel-section panel-section-footer">
-				<button id="cancel" class="panel-section-footer-button">Cancel</button>
+				<button id="cancel" class="panel-section-footer-button" data-msg="popupCancelButton"></button>
 				<div class="panel-section-footer-separator"></div>
-				<button id="download" class="panel-section-footer-button dnd">Download</button>
-				<div id="download_sep" class="panel-section-footer-separator dnd"></div>
-				<button id="go" disabled class="panel-section-footer-button default">Bookmark</button>
+				<button id="go" disabled class="panel-section-footer-button default" data-msg="popupBookmarkButton"></button>
 			</footer>
 		</div>
+		<script src="strings.js"></script>
 		<script src="storage.js"></script>
 		<script src="util.js"></script>
 		<script src="tabs.js"></script>

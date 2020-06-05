@@ -1,0 +1,22 @@
+CONTRIBUTING
+If you checked out this repository from its GitHub mirror, you should know that
+its authoritative source is <https://git.ylh.io/tiddlymarker/>. Patches produced
+by git-format-patch may be sent to <yestin@ylh.io>. GitHub pull requests and
+issues will be ignored.
+
+STYLE
+The preferred coding style for this repository, such as it is, is as follows:
+- Javascript and CSS are limited to lines of 80 columns. This is to maintain
+  readability when viewing many source files next to one another.
+- Line limits do NOT apply to JSON or HTML, as the result would be ridiculous.
+- Tabs for indentation.
+- As it concerns line length limits, tabs count for 4 columns.
+- In Javascript, prefer arrow functions, even at the top level, and use standard
+  function syntax to denote instances in which "this" is meaningful.
+- Strings that should be in single quotes include 'use strict', object
+  subscripts, event and element types, and other strings that behave largely as
+  symbols. Double quotes should be used for element properties (including IDs),
+  strings meant for output, such as contents of HTML or snippets of CSS syntax,
+  and other strings not directly tied to control flow.
+- Prefer template strings to concatenation, though exercise judgment as to
+  readability.

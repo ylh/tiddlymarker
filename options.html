@@ -2,70 +2,68 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>TiddlyMarker Settings</title>
+		<title data-msg="optionsTitle"></title>
 		<link rel="icon" href="icons/32.png">
 		<link rel="stylesheet" href="page.css">
 		<link rel="stylesheet" href="options.css">
 	</head>
 	<body>
-		<div hidden id="firstinstall" class="barmsg">
-			This appears to be your first install. Be sure to review these settings and set the configuration that best suits how you use your TiddlyWiki.
-		</div>
+		<div hidden id="firstinstall" class="barmsg" data-msg="optionsFirstInstall"></div>
 		<div hidden id="update" class="barmsg">
-			There has been a major update. Make
+			test
 		</div>
 		<div id="main">
-			<h1><img id="tidstar" src="icons/52.png" alt="TiddlyMarker Logo" width="26" height="26"> TiddlyMarker Settings</h1>
+			<h1><img id="tidstar" src="icons/52.png" alt="TiddlyMarker Logo" width="26" height="26"> <span data-msg="optionsTitle"></span></h1>
 			<section>
-				<h2>General</h2>
+				<h2 data-msg="optionsGeneralHeading"></h2>
 				<div>
 					<span><input disabled type="checkbox" autocomplete="off" id="quickmode"></span>
-					<label for="quickmode" class="greyout">Quick Mode</label>
+					<label for="quickmode" class="greyout" data-msg="quickmodeLabel"></label>
 				</div>
 				<div>
 					<span></span>
-					<small class="quickmode greyout">One-click bookmarking. In the event of an error, click again to see what went wrong.</small>
+					<small class="quickmode greyout" data-msg="quickmodeDesc"></small>
 				</div>
 				<div>
 					<span><input disabled type="checkbox" autocomplete="off" id="careful"></span>
-					<label for="careful" class="greyout">Careful</label>
+					<label for="careful" class="greyout" data-msg="carefulLabel"></label>
 				</div>
 				<div>
 					<span></span>
-					<small class="careful greyout">When clicking out of the popup instead of hitting Cancel, consider the bookmark unfinished.</small>
+					<small class="careful greyout" data-msg="carefulDesc"></small>
 				</div>
 				<div>
 					<span><input disabled type="checkbox" autocomplete="off" id="reqfav"></span>
-					<label for="reqfav" class="greyout">Use Favicons</label>
+					<label for="reqfav" class="greyout" data-msg="reqfavLabel"></label>
 				</div>
 				<div>
 					<span></span>
-					<small class="reqfav greyout">As there is no sensible way to access Firefox's favicon cache, favicons must be re-requested. If this raises privacy concerns, or you simply don't want to bloat your TW with excessive binary data, uncheck this.</small>
+					<small class="reqfav greyout" data-msg="reqfavDesc"></small>
 				</div>
 				<div>
 					<span>
 						<select disabled autocomplete="off" id="savingmode">
-							<option value="download">Download</option>
+							<option value="download" data-msg="savingmode_downloadLabel"></option>
 							<!--<option value="tabover">Tab-Over</option>!-->
-							<option value="webserver">Webserver</option>
+							<option value="webserver" data-msg="savingmode_webserverLabel"></option>
 						</select>
 					</span>
-					<label for="savingmode" class="greyout">Saving Mode</label>
+					<label for="savingmode" class="greyout" data-msg="savingmodeLabel"></label>
 				</div>
 				<div>
 					<span></span>
 					<dl class="savingmode greyout">
 						<div>
-							<dt>Download</dt>
-							<dd>Downloads a bookmark tiddler (or bookmark + favicon array) which may be imported by dragging into any TiddlyWiki.</dd>
+							<dt data-msg="savingmode_downloadLabel"></dt>
+							<dd data-msg="savingmode_downloadDesc"></dd>
 						</div>
 						<!--<div>
 							<dt>Tab-Over</dt>
 							<dd>If the specified destination TW is open, tab over to it; otherwise, open it. Import the appropriate tiddlers. If it was already open, tab back; if it was opened as a result of bookmarking, close it.</dd>
 						</div>!-->
 						<div>
-							<dt>Webserver</dt>
-							<dd>Directly adds the appropriate tiddlers to a Node.js TiddlyWiki.</dd>
+							<dt data-msg="savingmode_webserverLabel"></dt>
+							<dd data-msg="savingmode_webserverDesc"></dd>
 						</div>
 					</dl>
 				</div>
@@ -94,30 +92,30 @@
 				</div>
 			</section>!-->
 			<section id="webserver_prefs" class="greyout">
-				<h2>Webserver Mode</h2>
+				<h2 data-msg="savingmode_webserverHeading"></h2>
 				<div>
 					<span>
 						<input disabled type="text" autocomplete="off" id="address">
 					</span>
-					<label for="address" class="greyout">Server Address</label>
+					<label for="address" class="greyout" data-msg="addressLabel"></label>
 				</div>
 				<div>
 					<span>
 						<input disabled type="checkbox" autocomplete="off" id="auth">
 					</span>
-					<label for="auth" class="greyout">Authentication</label>
+					<label for="auth" class="greyout" data-msg="authLabel"></label>
 				</div>
 				<div>
 					<span></span>
 					<div id="authsub">
 						<div>
-							<label for="username" class="greyout">Username: </label>
+							<label for="username" class="greyout"><span data-msg="usernameLabel"></span> </label>
 							<span>
 								<input disabled type="text" autocomplete="off" id="username">
 							</span>
 						</div>
 						<div>
-							<label for="password" class="greyout">Password: </label>
+							<label for="password" class="greyout"><span data-msg="passwordLabel"></span> </label>
 							<span>
 								<input disabled type="password" autocomplete="off" id="password">
 							</span>
@@ -128,24 +126,20 @@
 					<span>
 						<input disabled type="checkbox" autocomplete="off" id="safety">
 					</span>
-					<label for="safety" class="greyout">Safety</label>
+					<label for="safety" class="greyout" data-msg="safetyLabel"></label>
 				</div>
 				<div>
 					<span></span>
-					<small class="safety greyout">
-						By default, this add-on will complain if you attempt to authenticate or upload over cleartext to a Node.js TiddlyWiki that is not on localhost. If your TiddlyWiki lives on another box on the LAN, or you really don't care, you can turn this off.
-					</small>
+					<small class="safety greyout" data-msg="safetyDesc"></small>
 				</div>
 			</section>
 			<section>
-				<h2>Advanced</h2>
+				<h2 data-msg="optionsFormattingHeading"></h2>
 				<div>
 					<span>
-						<input disabled type="button" autocomplete="off" id="reset_bookmark_fmt" value="Reset">
+						<input disabled type="button" autocomplete="off" id="reset_bookmark_fmt" data-msg="optionsResetButton">
 					</span>
-					<span class="bookmark_fmt greyout">
-						Bookmark Tiddler Format
-					</span>
+					<span class="bookmark_fmt greyout" data-msg="bookmark_fmtLabel"></span>
 				</div>
 				<div>
 					<span></span>
@@ -156,44 +150,41 @@
 						<dl class="bookmark_fmt greyout">
 							<div>
 								<dt><code>rawtitle</code></dt>
-								<dd>Full <code>&lt;title&gt;</code> of the page</dd>
+								<dd data-msg="bookmark_fmt_rawtitleDesc"></dd>
 							</div>
 							<div>
 								<dt><code>title</code></dt>
-								<dd>By default or in Quick Mode, <code>rawtitle</code> scrubbed of any <code>| [ ] { }</code>;<br>
-								otherwise, the title entered into the popup</dd>
+								<dd data-msg="bookmark_fmt_titleDesc"></dd>
 							</div>
 							<div>
 								<dt><code>url</code></dt>
-								<dd>URL of the page</dd>
+								<dd data-msg="bookmark_fmt_urlDesc"></dd>
 							</div>
 							<div>
 								<dt><code>icon</code></dt>
-								<dd>Output of <code>icon_fmt</code> below; <code>undefined</code> if Use Favicons is unchecked or there is no favicon found</dd>
+								<dd data-msg="bookmark_fmt_iconDesc"></dd>
 							</div>
 						</dl>
-						<p class="bookmark_fmt greyout"><small><i>Be sure to follow the <a href="https://tiddlywiki.com/static/TiddlyWeb%2520JSON%2520tiddler%2520format.html">TiddlyWeb JSON tiddler format</a> rather than the standard. In the case of the <i>Download</i> or <i>Tab-Over</i> modes, the generated tiddler(s) will automatically be converted to the standard format; it's just more straightforward to go this way around than the other.</i></small></p>
-						<p class="bookmark_fmt greyout"><small><i>In the <i>Webserver</i> saving mode, the returned JSON from this function will have its <i><code>.title</code></i> taken and URL encoded for the server API route. Lack of a <i><code>title</code></i> will cause an error in <b>any</b> mode; consider this your only sanity check.</i></small></p>
+						<p class="bookmark_fmt greyout"><small data-msg="bookmark_fmtExplanation"></small></p>
+						<p class="bookmark_fmt greyout"><small data-msg="bookmark_fmtSanityWarning"></small></p>
 					</div>
 				</div>
 				<div>
 					<span>
 						<input disabled type="checkbox" autocomplete="off" id="favicon_separate">
 					</span>
-					<label for="favicon_separate" class="greyout">Separate Favicon</label>
+					<label for="favicon_separate" class="greyout" data-msg="favicon_separateLabel"></label>
 				</div>
 				<div>
 					<span></span>
-					<small class="favicon_separate greyout">
-						When checked, the output of <code>icon_fmt</code> is presumed to be a full-fledged tiddler that is also downloaded or sent. When unchecked, the output of <code>icon_fmt</code> is only used as the <code>icon</code> parameter of <code>bookmark_fmt</code>.
-					</small>
+					<small class="favicon_separate greyout" data-msg="favicon_separateDesc"></small>
 				</div>
 				<div>
 					<span>
-						<input disabled type="button" autocomplete="off" id="reset_favicon_fmt" value="Reset">
+						<input disabled type="button" autocomplete="off" id="reset_favicon_fmt" data-msg="optionsResetButton">
 					</span>
 					<span class="favicon_fmt greyout">
-						Favicon Format
+						
 					</span>
 				</div>
 				<div>
@@ -205,58 +196,59 @@
 						<dl class="favicon_fmt greyout">
 							<div>
 								<dt><code>data</code></dt>
-								<dd>Image data as a string, base64, or plaintext in the case of SVG; note how binary tiddlers are represented
+								<dd data-msg="favicon_fmt_dataDesc"></dd>
 							</div>
 							<div>
 								<dt><code>hash</code></dt>
-								<dd>SHA-1 sum of <code>data</code>; suggested as favicon tiddler title</dd>
+								<dd data-msg="favicon_fmt_hashDesc"></dd>
 							</div>
 							<div>
 								<dt><code>mime</code></dt>
-								<dd>Inferred media type</dd>
+								<dd data-msg="favicon_fmt_mimeDesc"></dd>
 							</div>
 							<div>
 								<dt><code>datauri</code></dt>
-								<dd>Full data URI constructed from <code>data</code> and <code>mime</code>. 
+								<dd data-msg="favicon_fmt_datauriDesc"></dd>
 							</div>
 							<div>
 								<dt><code>ext</code></dt>
-								<dd>Plausible extension according to <code>mime</code></dd>
+								<dd data-msg="favicon_fmt_extDesc"></dd>
 							</div>
 						</dl>
-						<p class="favicon_fmt greyout"><small><i>When using <i>Separate Favicon</i>, notes about <i><code>.title</code></i> apply as above.</i></small></p>
+						<p class="favicon_fmt greyout"><small data-msg="favicon_fmtExplanation"></small></p>
 					</div>
 				</div>
 			</section>
 			<section>
-				<h2>Settings</h2>
+				<h2 data-msg="optionsMetaHeading"></h2>
 				<div>
 					<span>
 						<input type="checkbox" autocomplete="off" id="textarea_tabs">
 					</span>
 					<span>
-						<label for="textarea_tabs">Insert tab characters in textareas</label>
+						<label for="textarea_tabs" data-msg="textarea_tabsLabel"></label>
 					</span>
 				</div>
 				<div>
 					<span></span>
-					<small class="textarea_tabs">Textareas being <code>bookmark_fmt</code> and <code>icon_fmt</code> above. For accessibility reasons, it's best that this is on a manual switch.</small>
+					<small class="textarea_tabs" data-msg="textarea_tabsDesc"></small>
 				</div>
 				<div>
 					<span>
-						<input disabled type="button" autocomplete="off" id="reset_all" value="Reset">
+						<input disabled type="button" autocomplete="off" id="reset_all" data-msg="optionsResetButton">
 					</span>
 					<span>
 						<input disabled type="checkbox" autocomplete="off" id="unlock_reset">
-						<label for="unlock_reset" class="greyout">Reset All</label>
+						<label for="unlock_reset" class="greyout" data-msg="unlock_resetLabel"></label>
 					</span>
 				</div>
 				<div>
 					<span></span>
-					<small class="unlock_reset greyout">Irreversible. Check the box to indicate that you are mindful of what you are doing.</small>
+					<small class="unlock_reset greyout" data-msg="unlock_resetWarning"></small>
 				</div>
 			</section>
 		</div>
+		<script src="strings.js"></script>
 		<script src="storage.js"></script>
 		<script src="util.js"></script>
 		<script src="options.js"></script>

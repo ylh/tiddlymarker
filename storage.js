@@ -5,7 +5,7 @@ const defaults = {
 		quickmode: false,
 		careful: false,
 		reqfav: true,
-		savingmode: "download",
+		savingmode: 'download',
 		/*taburi: "",*/
 		address: "",
 		auth: false,
@@ -38,7 +38,7 @@ return o;`,
 	justinstalled: true
 	},
 	local: {
-		state: "ready",
+		state: 'ready',
 		error: {}
 	}
 };
@@ -46,8 +46,8 @@ return o;`,
 const storage_obj = async (a, k) =>
 	await browser.storage[a].get({[k]: defaults[a][k]});
 
-const local_of = async k => (await storage_obj("local", k))[k];
-const pref_of = async k => (await storage_obj("sync", k))[k];
+const local_of = async k => (await storage_obj('local', k))[k];
+const pref_of = async k => (await storage_obj('sync', k))[k];
 
 const fake_update = async (a, k) =>
 	browser.storage[a].set(await storage_obj(a, k));

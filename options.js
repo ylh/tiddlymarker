@@ -1,11 +1,11 @@
 'use strict';
 
-const value_field = elem => elem.type === 'checkbox' ? "checked" : "value";
+const value_field = elem => elem.type === 'checkbox' ? 'checked' : 'value';
 const populate = (elem, v) => elem[value_field(elem)] = v;
 const readfrom = elem => elem[value_field(elem)];
 
 const act = b => k => {
-	const grey = (b, e) => e.classList[b ? "remove" : "add"]("greyout");
+	const grey = (b, e) => e.classList[b ? 'remove' : 'add']("greyout");
 
 	let e = document.getElementById(k);
 
@@ -83,7 +83,7 @@ const reset_one = k =>
 	async function(ev) {
 		let e = document.getElementById(k);
 		(act(false))(k);
-		await browser.storage.sync.set({[k]: defaults["sync"][k]});
+		await browser.storage.sync.set({[k]: defaults.sync[k]});
 		await controls[k].pop.fill(e, k);
 		e.dispatchEvent(new Event('input'));
 		(act(true))(k);
@@ -202,7 +202,7 @@ document.getElementById("textarea_tabs").addEventListener('click', function() {
 
 
 (async () => {
-	if (await pref_of("justinstalled")) {
+	if (await pref_of('justinstalled')) {
 		document.getElementById("firstinstall").hidden = false;
 		await browser.storage.sync.set({justinstalled: false});
 	}
@@ -210,8 +210,8 @@ document.getElementById("textarea_tabs").addEventListener('click', function() {
 	for (let [k, v] of Object.entries(controls)) {
 		let e = document.getElementById(k);
 		switch (k) {
-		case "bookmark_fmt":
-		case "favicon_fmt":
+		case 'bookmark_fmt':
+		case 'favicon_fmt':
 			e.dispatchEvent(new Event('input'));
 		default:
 		}

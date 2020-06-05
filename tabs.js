@@ -8,20 +8,20 @@ const abtobs = ab =>
 	/* don't you just adore optional arguments */
 	byte_flatmap(b => String.fromCharCode(b), ab);
 const abtoh = ab =>
-	byte_flatmap(b => ("00" + b.toString(16)).slice(-2), ab);
+	byte_flatmap(b => `00${b.toString(16)}`.slice(-2), ab);
 
 const exts = {
 	gif: "gif",
 	png: "png",
 	jpeg: "jpg",
-	["x-icon"]: "ico",
-	["vnd.microsoft.icon"]: "ico",
+	['x-icon']: "ico",
+	['vnd.microsoft.icon']: "ico",
 	bmp: "bmp",
-	["svg+xml"]: "svg",
+	['svg+xml']: "svg",
 	webp: "webp"
 };
 const favicon_of = async tab => {
-	if (!(await pref_of("reqfav")))
+	if (!(await pref_of('reqfav')))
 		return undefined;
 	return favicon_req(tab);
 };
@@ -32,7 +32,7 @@ const favicon_req = tab => new Promise((resolve, reject) => {
 	xhr.responseType = 'arraybuffer';
 	xhr.open("GET", tab.favIconUrl);
 	xhr.onload = function() {
-		let mime = this.getResponseHeader("Content-Type");
+		let mime = this.getResponseHeader('Content-Type');
 		let [type, subtype] = mime.split("/");
 
 		if (type !== "image") {
@@ -50,7 +50,7 @@ const favicon_req = tab => new Promise((resolve, reject) => {
 
 		(async () => resolve({
 			data: data,
-			hash: abtoh(await crypto.subtle.digest("SHA-1", this.response)),
+			hash: abtoh(await crypto.subtle.digest('SHA-1', this.response)),
 			mime: mime,
 			datauri: `data:${mime}${dc}`,
 			ext: exts[subtype]
@@ -89,7 +89,7 @@ const tab_reads = (() => {
 })();
 
 const tab_get = (o, r) =>
-	(r !== undefined && o.hasOwnProperty("get")) ? o.get(r) : r;
+	(r !== undefined && o.hasOwnProperty('get')) ? o.get(r) : r;
 
 const tab_read = t => async k => {
 	const o = tab_reads[k];

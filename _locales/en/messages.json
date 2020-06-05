@@ -1,0 +1,297 @@
+{
+	"extensionDescription": {
+		"message": "Bookmarks pages to TiddlyWiki"
+	},
+	"browserActionHover": {
+		"message": "Create Bookmark"
+	},
+	"formatErrorTitle": {
+		"message": "Format Error"
+	},
+	"formatErrorAdvice": {
+		"message": "Correct <code>$FIELD$</code> accordingly.",
+		"placeholders": {
+			"field": {
+				"content": "$1"
+			}
+		}
+	},
+	"permissionErrorTitle": {
+		"message": "Permission Error"
+	},
+	"contentScriptErrorReason": {
+		"message": "For technical reasons, while bookmarks of Mozilla/Firefox domains and <code>about:</code> pages can be made, they cannot be saved while on those pages."
+	},
+	"contentScriptErrorAdvice": {
+		"message": "Simply go to a tab of any other sort, and reattempt saving this bookmark. We apologise for the inconvenience."
+	},
+	"sanityFieldsReason": {
+		"message": "Property <code>fields</code> contains properties that override others"
+	},
+	"sanityTitleReason": {
+		"message": "No property <code>title</code> found"
+	},
+	"networkErrorTitle": {
+		"message": "Network Error"
+	},
+	"couldNotReason": {
+		"message": "Could not $ACTION$",
+		"placeholders": {
+			"action": {
+				"content": "$1"
+			}
+		}
+	},
+	"networkErrorAdvice": {
+		"message": "Ensure that the server is running, and you have a working connection."
+	},
+	"unknownErrorTitle": {
+		"message": "Unknown Error"
+	},
+	"xhrErrorReason": {
+		"message": "Request terminated while attempting to $ACTION$",
+		"placeholders": {
+			"action": {
+				"content": "$1"
+			}
+		}
+	},
+	"putTiddlerPhrase": {
+		"message": "put $TYPE$ tiddler",
+		"placeholders": {
+			"action": {
+				"content": "$1"
+			}
+		}
+	},
+	"checkTiddlerPhrase": {
+		"message": "check for $TYPE$ tiddler",
+		"placeholders": {
+			"action": {
+				"content": "$1"
+			}
+		}
+	},
+	"permissionErrorAdvice": {
+		"message": "Ensure your credentials confer write permissions."
+	},
+	"validateCredentialsAdvice": {
+		"message": "Ensure your credentials are valid."
+	},
+	"ensureTiddlyWikiAdvice": {
+		"message": "Ensure that the configured address points to a TiddlyWiki server."
+	},
+	"enableAuthAdvice": {
+		"message": "Enable authentication in preferences."
+	},
+	"downloadErrorTitle": {
+		"message": "Download Interrupted"
+	},
+	"tryAgainAdvice": {
+		"message": "Try again."
+	},
+	"configErrorTitle": {
+		"message": "Configuration Error"
+	},
+	"serverAddressAdvice": {
+		"message": "Correct the server address accordingly."
+	},
+	"serverAddressParseReason": {
+		"message": "Could not parse as URL"
+	},
+	"serverAddressHashReason": {
+		"message": "Unexpected hash fragment"
+	},
+	"serverAddressQueryReason": {
+		"message": "Unexpected query string"
+	},
+	"serverAddressAuthReason": {
+		"message": "Unexpected username or password"
+	},
+	"serverAddressAuthAdvice": {
+		"message": "Move authentication to its respective fields."
+	},
+	"safetyErrorTitle": {
+		"message": "Unsafe Operation"
+	},
+	"safetyErrorReason": {
+		"message": "Refusing to send plaintext to non-localhost address"
+	},
+	"safetyErrorAdvice": {
+		"message": "If this is intentional, uncheck \"Safety\"."
+	},
+	"serverAddressProtocolReason": {
+		"message": "Unexpected or no protocol specified"
+	},
+	"refusingToSaveTitle": {
+		"message": "Refusing to save"
+	},
+	"alreadyExistsReason": {
+		"message": "Bookmark with title already exists"
+	},
+	"interruptedTitle": {
+		"message": "Interrupted"
+	},
+	"interruptedReason": {
+		"message": "Browser quit while saving bookmark"
+	},
+	"favicon": {
+		"message": "favicon"
+	},
+	"bookmark": {
+		"message": "favicon"
+	},
+
+	"unfinishedWarning": {
+		"message": "If you meant to discard this bookmark, hit <b>Cancel</b>."
+	},
+
+	"siteTitlePlaceholder": {
+		"message": "[site title]"
+	},
+	"popupUrlLabel": {
+		"message": "URL:"
+	},
+	"popupTiddlerTitleLabel": {
+		"message": "Tiddler Title:"
+	},
+	"popupCancelButton": {
+		"message": "Cancel"
+	},
+	"popupBookmarkButton": {
+		"message": "Bookmark"
+	},
+
+	"optionsTitle": {
+		"message": "TiddlyMarker Settings"
+	},
+	"optionsFirstInstall": {
+		"message": "This appears to be your first install. Be sure to review these settings and set the configuration that best suits how you use your TiddlyWiki."
+	},
+	"optionsGeneralHeading": {
+		"message": "General"
+	},
+	"quickmodeLabel": {
+		"message": "Quick Mode"
+	},
+	"quickmodeDesc": {
+		"message": "One-click bookmarking. In the event of an error, click again to see what went wrong."
+	},
+	"carefulLabel": {
+		"message": "Careful"
+	},
+	"carefulDesc": {
+		"message": "When clicking out of the popup instead of hitting Cancel, consider the bookmark unfinished."
+	},
+	"reqfavLabel": {
+		"message": "Use Favicons"
+	},
+	"reqfavDesc": {
+		"message": "As there is no sensible way to access Firefox's favicon cache, favicons must be re-requested. If this raises privacy concerns, or you simply don't want to bloat your TW with excessive binary data, uncheck this."
+	},
+	"savingmodeLabel": {
+		"message": "Saving Mode"
+	},
+	"savingmode_downloadLabel": {
+		"message": "Download"
+	},
+	"savingmode_downloadDesc": {
+		"message": "Downloads a bookmark tiddler (or bookmark + favicon array) which may be imported by dragging into any TiddlyWiki."
+	},
+	"savingmode_webserverLabel": {
+		"message": "Webserver"
+	},
+	"savingmode_webserverDesc": {
+		"message": "Directly adds the appropriate tiddlers to a Node.js TiddlyWiki."
+	},
+	"savingmode_webserverHeading": {
+		"message": "Webserver Mode"
+	},
+	"addressLabel": {
+		"message": "Server Address"
+	},
+	"authLabel": {
+		"message": "Authentication"
+	},
+	"usernameLabel": {
+		"message": "Username:"
+	},
+	"passwordLabel": {
+		"message": "Password:"
+	},
+	"safetyLabel": {
+		"message": "Safety"
+	},
+	"safetyDesc": {
+		"message": "By default, this add-on will complain if you attempt to authenticate or upload over cleartext to a Node.js TiddlyWiki that is not on localhost. If your TiddlyWiki lives on another box on the LAN, or you really don't care, you can turn this off."
+	},
+	"optionsFormattingHeading": {
+		"message": "Formatting"
+	},
+	"optionsResetButton": {
+		"message": "Reset"
+	},
+	"bookmark_fmtLabel": {
+		"message": "Bookmark Tiddler Format"
+	},
+	"bookmark_fmt_rawtitleDesc": {
+		"message": "Full <code>&lt;title&gt;</code> of the page"
+	},
+	"bookmark_fmt_titleDesc": {
+		"message": "By default or in Quick Mode, <code>rawtitle</code> scrubbed of any <code>| [ ] { }</code>;<br>otherwise, the title entered into the popup"
+	},
+	"bookmark_fmt_urlDesc": {
+		"message": "URL of the page"
+	},
+	"bookmark_fmt_iconDesc": {
+		"message": "Output of <code>icon_fmt</code> below; <code>undefined</code> if Use Favicons is unchecked or there is no favicon found"
+	},
+	"bookmark_fmtExplanation": {
+		"message": "<i>Be sure to follow the <a href=\"https://tiddlywiki.com/static/TiddlyWeb%2520JSON%2520tiddler%2520format.html\">TiddlyWeb JSON tiddler format</a> rather than the standard. In the case of the <i>Download</i> or <i>Tab-Over</i> modes, the generated tiddler(s) will automatically be converted to the standard format; it's just more straightforward to go this way around than the other.</i>"
+	},
+	"bookmark_fmtSanityWarning": {
+		"message": "<i>In the <i>Webserver</i> saving mode, the returned JSON from this function will have its <i><code>.title</code></i> taken and URL encoded for the server API route. Lack of a <i><code>title</code></i> will cause an error in <b>any</b> mode; consider this your only sanity check.</i>"
+	},
+	"favicon_separateLabel": {
+		"message": "Separate Favicon"
+	},
+	"favicon_separateDesc": {
+		"message": "When checked, the output of <code>icon_fmt</code> is presumed to be a full-fledged tiddler that is also downloaded or sent. When unchecked, the output of <code>icon_fmt</code> is only used as the <code>icon</code> parameter of <code>bookmark_fmt</code>."
+	},
+	"favicon_fmtLabel": {
+		"message": "Favicon Format"
+	},
+	"favicon_fmt_dataDesc": {
+		"message": "Image data as a string, base64, or plaintext in the case of SVG; note how binary tiddlers are represented renders this distinction meaningless"
+	},
+	"favicon_fmt_hashDesc": {
+		"message": "SHA-1 sum of the binary representation of <code>data</code>; suggested as favicon tiddler title"
+	},
+	"favicon_fmt_mimeDesc": {
+		"message": "Inferred media type"
+	},
+	"favicon_fmt_datauriDesc": {
+		"message": "Full data URI constructed from <code>data</code> and <code>mime</code>"
+	},
+	"favicon_fmt_extDesc": {
+		"message": "Plausible extension according to <code>mime</code>"
+	},
+	"favicon_fmtExplanation": {
+		"message": "<i>When using <i>Separate Favicon</i>, notes about <i><code>.title</code></i> apply as above.</i>"
+	},
+	"optionsMetaHeading": {
+		"message": "Settings Page"
+	},
+	"textarea_tabsLabel": {
+		"message": "Insert tab characters in <code>textarea</code>"
+	},
+	"textarea_tabsDesc": {
+		"message": "Textareas being <code>bookmark_fmt</code> and <code>icon_fmt</code> above. For accessibility reasons, it's best that this is on a manual switch."
+	},
+	"unlock_resetLabel": {
+		"message": "Reset All"
+	},
+	"unlock_resetWarning": {
+		"message": "Irreversible. Check the box to indicate that you are mindful of what you are doing."
+	}
+}
