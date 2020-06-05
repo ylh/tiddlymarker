@@ -10,6 +10,8 @@
    storage. as a result, the API gains the illusion of orthogonality */
 let storage_cache = {};
 
+const msg = browser.i18n.getMessage;
+
 const popup_able = b => browser.browserAction.setPopup({popup: b ? null : ""});
 
 const badge = ({text, fg, bg}) => {
@@ -47,14 +49,14 @@ const do_bookmark = async () => {
 	).join("")}"`;
 	const creation_error = (error, field) =>
 		error.message.startsWith("Missing host permission") ? {
-			errortitle: browser.i18n.getMessage("permissionErrorTitle"),
-			reason: browser.i18n.getMessage("contentScriptErrorReason"),
+			errortitle: msg("permissionErrorTitle"),
+			reason: msg("contentScriptErrorReason"),
 			details: error.toString(),
-			advice: browser.i18n.getMessage("contentScriptErrorAdvice")
+			advice: msg("contentScriptErrorAdvice")
 		} : {
-			errortitle: browser.i18n.getMessage("formatErrorTitle"),
+			errortitle: msg("formatErrorTitle"),
 			details: error.toString(),
-			advice: browser.i18n.getMessage("formatErrorAdvice", field)
+			advice: msg("formatErrorAdvice", field)
 		};
 	let favicon_fmt_out, bookmark_fmt_out;
 
@@ -97,10 +99,10 @@ const send_bookmark = async (prefs, bookmark_fmt_out, favicon_fmt_out) => {
 			const {fields, ...rest} = result;
 
 			if (union(Object.keys(fields), Object.keys(rest)).length !== 0)
-				return browser.i18n.getMessage("sanityFieldsReason");
+				return msg("sanityFieldsReason");
 		}
 		if (!do_you_even(result, 'title'))
-			return browser.i18n.getMessage("sanityTitleReason");
+			return msg("sanityTitleReason");
 		return null;
 	};
 	const merge = (mode, tiddler) => {
@@ -115,9 +117,9 @@ const send_bookmark = async (prefs, bookmark_fmt_out, favicon_fmt_out) => {
 
 	if (bookmark_sanity !== null) {
 		return {
-			errortitle: browser.i18n.getMessage("formatErrorTitle"),
+			errortitle: msg("formatErrorTitle"),
 			reason: bookmark_sanity,
-			advice: browser.i18n.getMessage("formatErrorAdvice", "bookmark_fmt")
+			advice: msg("formatErrorAdvice", "bookmark_fmt")
 		};
 	}
 	bookmark_fmt_out = merge(prefs.savingmode, bookmark_fmt_out);
@@ -126,9 +128,9 @@ const send_bookmark = async (prefs, bookmark_fmt_out, favicon_fmt_out) => {
 
 		if (favicon_sanity !== null) {
 			return {
-				errortitle: browser.i18n.getMessage("formatErrorTitle"),
+				errortitle: msg("formatErrorTitle"),
 				reason: favicon_sanity,
-				advice: browser.i18n.getMessage(
+				advice: msg(
 					"formatErrorAdvice", "favicon_fmt"
 				)
 			};
@@ -152,13 +154,13 @@ const status_of = xhr => `${xhr.status} ${xhr.statusText}`;
 const prefab_xhr = (reject, act) => {
 	let xhr = new XMLHttpRequest();
 	xhr.onerror = _e => reject({
-		errortitle: browser.i18n.getMessage("networkErrorTitle"),
-		reason: browser.i18n.getMessage("couldNotReason", act),
-		advice: browser.i18n.getMessage("networkErrorAdvice")
+		errortitle: msg("networkErrorTitle"),
+		reason: msg("couldNotReason", act),
+		advice: msg("networkErrorAdvice")
 	});
 	xhr.onloadend = _e => reject({
-		errortitle: browser.i18n.getMessage("unknownErrorTitle"),
-		reason: browser.i18n.getMessage("xhrErrorReason", act)
+		errortitle: msg("unknownErrorTitle"),
+		reason: msg("xhrErrorReason", act)
 	});
 	return xhr;
 };
@@ -169,8 +171,8 @@ const authopen = (xhr, prefs, method, url) => xhr.open(method, url, true,
 );
 
 const put_tiddler = (resolve, reject, prefs, tiddler, desci18n) => {
-	const desc = browser.i18n.getMessage(desci18n),
-	      act = browser.i18n.getMessage("putTiddlerPhrase", desc);
+	const desc = msg(desci18n),
+	      act = msg("putTiddlerPhrase", desc);
 	let put = prefab_xhr(reject, act);
 
 	authopen(put, prefs, 'PUT', addr_of(prefs, tiddler));
@@ -180,10 +182,10 @@ const put_tiddler = (resolve, reject, prefs, tiddler, desci18n) => {
 			return resolve(null);
 		if (this.status === 401)
 			return reject({
-				errortitle: browser.i18n.getMessage("permissionErrorTitle"),
-				reason: browser.i18n.getMessage("couldNotReason", act),
+				errortitle: msg("permissionErrorTitle"),
+				reason: msg("couldNotReason", act),
 				details: status_of(this),
-				advice: browser.i18n.getMessage("permissionErrorAdvice")
+				advice: msg("permissionErrorAdvice")
 			});
 		return reject(status_of(this));
 	};
@@ -191,8 +193,8 @@ const put_tiddler = (resolve, reject, prefs, tiddler, desci18n) => {
 };
 
 const check_tiddler = (resolve, reject, prefs, tiddler, desci18n, ex, ne) => {
-	const desc = browser.i18n.getMessage(desci18n),
-	      act = browser.i18n.getMessage("checkTiddlerPhrase", desc);
+	const desc = msg(desci18n),
+	      act = msg("checkTiddlerPhrase", desc);
 	let get = prefab_xhr(reject, act);
 
 	authopen(get, prefs, 'GET', addr_of(prefs, tiddler));
@@ -203,12 +205,12 @@ const check_tiddler = (resolve, reject, prefs, tiddler, desci18n, ex, ne) => {
 			return ne();
 		if (this.status === 401)
 			return reject({
-				errortitle: browser.i18n.getMessage("permissionErrorTitle"),
-				reason: browser.i18n.getMessage("couldNotReason", act),
+				errortitle: msg("permissionErrorTitle"),
+				reason: msg("couldNotReason", act),
 				details: status_of(this),
 				advice: prefs.auth
-				      ? browser.i18n.getMessage("validateCredentialsAdvice")
-				      : browser.i18n.getMessage("enableAuthAdvice")
+				      ? msg("validateCredentialsAdvice")
+				      : msg("enableAuthAdvice")
 			});
 		return reject(status_of(this));
 	};
@@ -238,9 +240,9 @@ const sends = {
 		} catch (e) {
 			URL.revokeObjectURL(url);
 			return {
-				errortitle: browser.i18n.getMessage("downloadErrorTitle"),
+				errortitle: msg("downloadErrorTitle"),
 				details: e.toString(),
-				advice: browser.i18n.getMessage("tryAgainAdvice")
+				advice: msg("tryAgainAdvice")
 			};
 		}
 
@@ -249,9 +251,9 @@ const sends = {
 	webserver: (prefs, bookmark, favicon) => new Promise((resolve, reject) => {
 		const badurl = (reason, advice = "serverAddressAdvice") =>
 			reject({
-				errortitle: browser.i18n.getMessage("configErrorTitle"),
-				reason: browser.i18n.getMessage(reason),
-				advice: browser.i18n.getMessage(advice)
+				errortitle: msg("configErrorTitle"),
+				reason: msg(reason),
+				advice: msg(advice)
 			});
 		let u;
 
@@ -270,9 +272,9 @@ const sends = {
 		 && u.hostname !== "localhost" && u.hostname !== "127.0.0.1"
 		 && u.hostname !== "::1")
 		 	return reject({
-		 		errortitle: browser.i18n.getMessage("safetyErrorTitle"),
-				reason: browser.i18n.getMessage("safetyErrorReason"),
-				advice: browser.i18n.getMessage("safetyErrorAdvice")
+		 		errortitle: msg("safetyErrorTitle"),
+				reason: msg("safetyErrorReason"),
+				advice: msg("safetyErrorAdvice")
 			})
 		if (u.protocol !== "http:" && u.protocol !== "https:")
 			return badurl("serverAddressProtocolReason");
@@ -286,18 +288,18 @@ const sends = {
 		getstatus.onload = function(_e) {
 			if (this.status === 401 || this.status === 403)
 				return resolve({
-					errortitle: browser.i18n.getMessage("permissionErrorTitle"),
+					errortitle: msg("permissionErrorTitle"),
 					details: status_of(this),
-					advice: browser.i18n.getMessage("validateCredentialsAdvice")
+					advice: msg("validateCredentialsAdvice")
 				});
 			if (this.response !== null
 			 && this.response.hasOwnProperty('tiddlywiki_version')) {
 				return resolve(null);
 			}
 			return reject({
-				errortitle: browser.i18n.getMessage("serverErrorTitle"),
+				errortitle: msg("serverErrorTitle"),
 				details: status_of(this),
-				advice: browser.i18n.getMessage("ensureTiddlyWikiAdvice")
+				advice: msg("ensureTiddlyWikiAdvice")
 			});
 		};
 		getstatus.send();
@@ -312,8 +314,8 @@ const sends = {
 		check_tiddler(
 			resolve, reject, prefs, bookmark, "bookmark",
 			() => reject({
-				errortitle: browser.i18n.getMessage("refusingToSaveTitle"),
-				reason: browser.i18n.getMessage("alreadyExistsReason")
+				errortitle: msg("refusingToSaveTitle"),
+				reason: msg("alreadyExistsReason")
 			}),
 			() => resolve(do_fav)
 		)
@@ -323,7 +325,7 @@ const sends = {
 	)).then(_ => new Promise((resolve, reject) =>
 		put_tiddler(resolve, reject, prefs, bookmark, "bookmark")
 	)).catch(e => e.hasOwnProperty('errortitle') ? e : {
-		errortitle: browser.i18n.getMessage("unknownErrorTitle"),
+		errortitle: msg("unknownErrorTitle"),
 		details: e.toString()
 	})/*,
 	tabover: (prefs, bookmark, favicon) => new Promise((resolve, reject) => {
@@ -413,8 +415,8 @@ popup_able(false);
 		browser.storage.local.set({
 			state: 'failure',
 			error: {
-				errortitle: browser.i18n.getMessage("interruptedTitle"),
-				reason: browser.i18n.getMessage("interruptedReason")
+				errortitle: msg("interruptedTitle"),
+				reason: msg("interruptedReason")
 			}
 		});
 	else
