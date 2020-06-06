@@ -133,7 +133,7 @@
 		"message": "Interrupted"
 	},
 	"interruptedReason": {
-		"message": "Browser quit while saving bookmark"
+		"message": "Browser quit while saving"
 	},
 	"favicon": {
 		"message": "favicon"

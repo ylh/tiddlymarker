@@ -35,12 +35,10 @@ const favicon_req = tab => new Promise((resolve, reject) => {
 		let mime = this.getResponseHeader('Content-Type');
 		let [type, subtype] = mime.split("/");
 
-		if (type !== "image") {
-			/* i don't even want to think about whatever weird edge case would
-			   make this premature */
-			resolve(undefined);
-			return;
-		}
+		/* i don't even want to think about whatever weird edge case would
+		   make this premature */
+		if (type !== "image")
+			return resolve(undefined);
 
 		let bin = abtobs(this.response);
 		let data = bin;

@@ -38,15 +38,19 @@ const catch_bookmark = async () => {
 		browser.storage.local.set({state: 'done'});
 	}
 }
+/* if i were getting weird edge cases i would simply escape everything */
+const arg = str => `"${str.split("").map(single =>
+	`\\u${`0000${single.charCodeAt(0).toString(16).toUpperCase()}`.slice(-4)}`
+).join("")}"`;
+
+const literal_of = o => o === undefined
+	? "undefined"
+	: `JSON.parse(${arg(JSON.stringify(o))})`;
 
 const do_bookmark = async () => {
 	const prefs = await browser.storage.sync.get(defaults.sync),
 	      bookmark = await browser.storage.local.get(Object.keys(tab_reads)),
 	      {rawtitle, title, url, icon} = bookmark;
-	/* if i were getting weird edge cases i would simply escape everything */
-	const arg = str => `"${str.split("").map(c =>
-		`\\u${`0000${c.charCodeAt(0).toString(16).toUpperCase()}`.slice(-4)}`
-	).join("")}"`;
 	const creation_error = (error, field) =>
 		error.message.startsWith("Missing host permission") ? {
 			errortitle: msg("permissionErrorTitle"),
@@ -77,14 +81,11 @@ const do_bookmark = async () => {
 		}
 	}
 	try {
-		let iconarg = icon === undefined
-			? "undefined"
-			: `JSON.parse(${arg(JSON.stringify(favicon_fmt_out))})`;
-
 		bookmark_fmt_out = (await browser.tabs.executeScript({
 			code: `((rawtitle, title, url, icon) => {
 				${prefs.bookmark_fmt}
-			})(${arg(rawtitle)}, ${arg(title)}, ${arg(url)}, ${iconarg})`
+			})(${arg(rawtitle)}, ${arg(title)}, ${arg(url)},
+			   ${literal_of(icon)})`
 		}))[0];
 	} catch (e) {
 		return creation_error(e, "bookmark_fmt");
@@ -327,10 +328,7 @@ const sends = {
 	)).catch(e => e.hasOwnProperty('errortitle') ? e : {
 		errortitle: msg("unknownErrorTitle"),
 		details: e.toString()
-	})/*,
-	tabover: (prefs, bookmark, favicon) => new Promise((resolve, reject) => {
-
-	})*/
+	})
 };
 
 /* this seemed like it was going to be bigger and justify its scaffolding more
@@ -344,7 +342,6 @@ const handler_tree = {
 	local: {
 		state: (changes, change) => {
 			let nv = storage_cache.state = change.newValue;
-			console.log(`nv: ${nv}`);
 			badge({
 				ready: {text: "", fg: null, bg: null},
 				unfinished: {text: "!", fg: "white", bg: "#F80B"},

@@ -109,15 +109,9 @@ const controls = {
 		pop: pref,
 		activate: rel({
 			download: [],
-			/*tabover: ["tabover_prefs"],*/
 			webserver: ["webserver_prefs"]
 		})
 	},
-	/*tabover_prefs: {
-		root: false,
-		activate: always(["taburi"])
-	},
-	taburi: ordinary_child,*/
 	webserver_prefs: {
 		root: false,
 		activate: always(["address", "auth", "safety"])

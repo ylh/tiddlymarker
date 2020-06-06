@@ -6,7 +6,6 @@ const defaults = {
 		careful: false,
 		reqfav: true,
 		savingmode: 'download',
-		/*taburi: "",*/
 		address: "",
 		auth: false,
 		username: "",
