@@ -103,11 +103,13 @@ const send_bookmark = async (prefs, bookmark_fmt_out, favicon_fmt_out) => {
 		}
 		if (!do_you_even(result, 'title'))
 			return msg("sanityTitleReason");
+
 		return null;
 	};
 	const merge = (mode, tiddler) => {
 		if (mode !== 'webserver' && tiddler !== undefined) {
 			const {fields, ...rest} = tiddler;
+
 			return {...fields, ...rest};
 		}
 		return tiddler;
