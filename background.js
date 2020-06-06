@@ -43,10 +43,6 @@ const arg = str => `"${str.split("").map(single =>
 	`\\u${`0000${single.charCodeAt(0).toString(16).toUpperCase()}`.slice(-4)}`
 ).join("")}"`;
 
-const literal_of = o => o === undefined
-	? "undefined"
-	: `JSON.parse(${arg(JSON.stringify(o))})`;
-
 const do_bookmark = async () => {
 	const prefs = await browser.storage.sync.get(defaults.sync),
 	      bookmark = await browser.storage.local.get(Object.keys(tab_reads)),
@@ -81,11 +77,14 @@ const do_bookmark = async () => {
 		}
 	}
 	try {
+		let iconarg = icon === undefined
+				? "undefined"
+				: `JSON.parse(${arg(JSON.stringify(favicon_fmt_out))})`;
 		bookmark_fmt_out = (await browser.tabs.executeScript({
 			code: `((rawtitle, title, url, icon) => {
 				${prefs.bookmark_fmt}
 			})(${arg(rawtitle)}, ${arg(title)}, ${arg(url)},
-			   ${literal_of(icon)})`
+			   ${iconarg})`
 		}))[0];
 	} catch (e) {
 		return creation_error(e, "bookmark_fmt");
