@@ -58,46 +58,57 @@ const favicon_req = tab => new Promise((resolve, reject) => {
 	xhr.send();
 });
 
-const tab_reads = (() => {
+const field_reads = (() => {
 	const field = k => x => x[k],
 	      compose = (f, g) => x => f(g(x));
 
 	return {
+		rawtitle: {
+			from_tab: field("title"),
+			target: 'innerHTML'
+		},
+		title: {
+			from_tab: compose(scrub, field("title")),
+			target: "value",
+			input: true
+		},
+		tags: {
+			pull: async () => pref_of('default_tags'),
+			target: "value",
+			bypref: 'show_tags',
+			input: true
+		},
+		text: {
+			pull: async () => "",
+			target: "value",
+			bypref: 'show_text',
+			input: true
+		},
 		icon: {
 			from_tab: favicon_of,
 			get: field("datauri"),
 			target: "src"
 		},
-		rawtitle: {
-			from_tab: field("title"),
-			target: 'innerHTML'
-		},
 		url: {
 			from_tab: field("url"),
-			target: "value",
-			input: true
-		},
-		title: {
-			from_tab: compose(scrub, field("title")),
 			target: "value",
 			input: true
 		}
 	};
 })();
 
-const tab_get = (o, r) =>
+const field_get = (o, r) =>
 	(r !== undefined && o.hasOwnProperty('get')) ? o.get(r) : r;
 
 const tab_read = t => async k => {
-	const o = {...tab_reads, ...field_reads}[k];
+	const o = field_reads[k];
 	const r = await (o.hasOwnProperty('from_tab') ? o.from_tab(t) : o.pull());
 	await browser.storage.local.set({[k]: r});
-	return tab_get(o, r);
+	return field_get(o, r);
 };
-const stored_tab = async k => tab_get({
-	...tab_reads,
-	...field_reads
-}[k], await local_of(k));
+
+const stored_field = async k => tab_get(field_reads[k], await local_of(k));
+
 const current_tab = async () =>
 	 (await browser.tabs.query({
 		currentWindow: true,

@@ -27,10 +27,7 @@ const all_fields = f =>
 	browser.storage.sync.get(
 		defaults.sync
 	).then(prefs =>
-		Promise.all(Object.entries({
-			...tab_reads,
-			...field_reads
-		}).map(async ([k, v]) => {
+		Promise.all(Object.entries(field_reads).map(async ([k, v]) => {
 			let e = document.getElementById(k);
 			if (!v.hasOwnProperty('bypref')
 			 || (!prefs.quickmode && prefs[v.bypref])) {
@@ -45,7 +42,6 @@ const all_fields = f =>
 				e.dispatchEvent(new Event('input'));
 			if (v.hasOwnProperty('input') && v.input) {
 				e.addEventListener('input', function(_ev){
-					console.log(`setting ${k} to ${this[v.target]}`);
 					browser.storage.local.set({[k]: this[v.target]});
 				});
 			}
@@ -57,14 +53,14 @@ const all_fields = f =>
 
 	switch (await local_of('state')) {
 	case 'failure':
-		f = stored_tab;
+		f = stored_field;
 		for (let [k, v] of Object.entries(await local_of('error'))) {
 			display(k, v);
 		}
 		break;
 	case 'unfinished':
 		display("warning", browser.i18n.getMessage("unfinishedWarning"));
-		f = stored_tab;
+		f = stored_field;
 		break;
 	default: // case 'ready'
 		f = tab_read(await current_tab());

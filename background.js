@@ -45,10 +45,7 @@ const arg = str => `"${str.split("").map(single =>
 
 const do_bookmark = async () => {
 	const prefs = await browser.storage.sync.get(defaults.sync),
-	      bookmark = await browser.storage.local.get(Object.keys({
-	      	...tab_reads,
-	      	...field_reads
-	      })),
+	      bookmark = await browser.storage.local.get(Object.keys(field_reads)),
 	      {rawtitle, title, tags, text, url, icon} = bookmark;
 	const creation_error = (error, field) =>
 		error.message.startsWith("Missing host permission") ? {
@@ -390,10 +387,7 @@ browser.browserAction.onClicked.addListener(() => {
 		if (!storage_cache.quickmode)
 			break;
 		(async () => {
-			await Promise.all(Object.keys({
-				...tab_reads,
-				...field_reads
-			}).map(
+			await Promise.all(Object.keys(field_reads).map(
 				tab_read(await current_tab())
 			));
 			storage_cache.state = 'working';
