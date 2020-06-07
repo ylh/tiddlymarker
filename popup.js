@@ -24,12 +24,33 @@ const display = (id, msg) => {
 };
 
 const all_fields = f =>
-	Promise.all(Object.entries(tab_reads).map(async ([k, v]) => {
-		let r = await f(k);
-		if (r !== undefined) {
-			document.getElementById(k)[v.target] = r;
-		}
-	}));
+	browser.storage.sync.get(
+		defaults.sync
+	).then(prefs =>
+		Promise.all(Object.entries({
+			...tab_reads,
+			...field_reads
+		}).map(async ([k, v]) => {
+			let e = document.getElementById(k);
+			if (!v.hasOwnProperty('bypref')
+			 || (!prefs.quickmode && prefs[v.bypref])) {
+				let r = await f(k);
+				if (r !== undefined)
+					e[v.target] = r;
+			}
+			if (v.hasOwnProperty('bypref')
+			 && !prefs.quickmode && prefs[v.bypref])
+				e.parentElement.classList.remove("dnd");
+			if (e.tagName == 'TEXTAREA')
+				e.dispatchEvent(new Event('input'));
+			if (v.hasOwnProperty('input') && v.input) {
+				e.addEventListener('input', function(_ev){
+					console.log(`setting ${k} to ${this[v.target]}`);
+					browser.storage.local.set({[k]: this[v.target]});
+				});
+			}
+		}))
+	);
 
 (async () => {
 	let f;
@@ -51,13 +72,17 @@ const all_fields = f =>
 	await all_fields(f);
 
 	let e = document.getElementById("go");
+
 	e.addEventListener('click', async () => {
 		proper_finish();
 		await browser.storage.local.set({state: 'working'});
 		window.close();
 	});
+
 	e.disabled = false;
+
 	document.getElementById("settings").addEventListener('click', () =>
 		browser.runtime.openOptionsPage().then(_ => window.close())
 	);
+
 })();

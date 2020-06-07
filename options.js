@@ -94,9 +94,12 @@ const controls = {
 	quickmode: {
 		root: true,
 		pop: pref,
-		activate: rel({false: ["careful"]})
+		activate: rel({false: ["popup_prefs"]})
 	},
-	careful: ordinary_child,
+	default_tags: {
+		root: true,
+		pop: pref
+	},
 	reqfav: {
 		root: true,
 		pop: pref,
@@ -112,6 +115,13 @@ const controls = {
 			webserver: ["webserver_prefs"]
 		})
 	},
+	popup_prefs: {
+		root: false,
+		activate: always(["careful", "show_text", "show_tags"])
+	},
+	careful: ordinary_child,
+	show_text: ordinary_child,
+	show_tags: ordinary_child,
 	webserver_prefs: {
 		root: false,
 		activate: always(["address", "auth", "safety"])
@@ -164,17 +174,6 @@ const controls = {
 		onclick: reset_all
 	}
 };
-
-/* textarea autoresize */
-document.querySelectorAll("textarea").forEach(e => {
-	const dy = e.offsetHeight - e.scrollHeight;
-
-	e.addEventListener('input', function() {
-		this.style.height = "1px";
-		this.style.height = `${dy + e.scrollHeight}px`;
-	});
-	e.dispatchEvent(new Event('input'));
-});
 
 /* textarea tabbing */
 const tabber = function(e) {

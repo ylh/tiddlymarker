@@ -4,6 +4,9 @@ const defaults = {
 	sync: {
 		quickmode: false,
 		careful: false,
+		show_text: true,
+		show_tags: true,
+		default_tags: "Bookmark",
 		reqfav: true,
 		savingmode: 'download',
 		address: "",
@@ -14,7 +17,8 @@ const defaults = {
 		bookmark_fmt:
 `let o = {
 	title: title,
-	tags: "Bookmark",
+	tags: tags,
+	text: text,
 	fields: {
 		rawtitle: rawtitle,
 		link: url
@@ -38,7 +42,8 @@ return o;`,
 	},
 	local: {
 		state: 'ready',
-		error: {}
+		error: {},
+		tags: ""
 	}
 };
 

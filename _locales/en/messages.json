@@ -155,6 +155,12 @@
 	"popupTiddlerTitleLabel": {
 		"message": "Tiddler Title:"
 	},
+	"popupTagsLabel": {
+		"message": "Tags:"
+	},
+	"popupTiddlerTextLabel": {
+		"message": "Tiddler Text"
+	},
 	"popupCancelButton": {
 		"message": "Cancel"
 	},
@@ -175,13 +181,34 @@
 		"message": "Quick Mode"
 	},
 	"quickmodeDesc": {
-		"message": "One-click bookmarking. In the event of an error, click again to see what went wrong."
+		"message": "Disable the popup for one-click bookmarking. In the event of an error, click again to see a minimal popup describing what went wrong."
+	},
+	"popupHeading": {
+		"message": "Popup Behaviour"
 	},
 	"carefulLabel": {
 		"message": "Careful"
 	},
 	"carefulDesc": {
 		"message": "When clicking out of the popup instead of hitting Cancel, consider the bookmark unfinished."
+	},
+	"show_textLabel": {
+		"message": "Show Tiddler Text"
+	},
+	"show_textDesc": {
+		"message": "Take notes on the bookmark directly in the popup window."
+	},
+	"show_tagsLabel": {
+		"message": "Show Tags"
+	},
+	"show_tagsDesc": {
+		"message": "Initially populated with the contents of Default Tags below."
+	},
+	"default_tagsLabel": {
+		"message": "Default Tags"
+	},
+	"default_tagsDesc": {
+		"message": "Specified in the TiddlyWiki format, i.e. separated by spaces; entries containing spaces enclosed in [[double square brackets]]."
 	},
 	"reqfavLabel": {
 		"message": "Use Favicons"
@@ -236,6 +263,12 @@
 	},
 	"bookmark_fmt_rawtitleDesc": {
 		"message": "Full <code>&lt;title&gt;</code> of the page"
+	},
+	"bookmark_fmt_tagsDesc": {
+		"message": "Any tags in Default Tags, or those specified in the popup."
+	},
+	"bookmark_fmt_textDesc": {
+		"message": "Any description provided in the popup."
 	},
 	"bookmark_fmt_titleDesc": {
 		"message": "By default or in Quick Mode, <code>rawtitle</code> scrubbed of any <code>| [ ] { }</code>;<br>otherwise, the title entered into the popup"

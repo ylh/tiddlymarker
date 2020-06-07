@@ -76,6 +76,21 @@
 			.ghost:focus {
 				box-shadow: 0 0 0 1px #0a84ff inset, 0 0 0 1px #0a84ff, 0 0 0 4px rgba(10, 132, 255, 0.3)
 			}
+			textarea {
+				flex: 1;
+				resize: none;
+			}
+			input[type="text"] {
+				box-sizing: content-box;
+				height: initial!important;
+			}
+			/* some of the default styling choices are just indefensible */
+			textarea, input[type="text"] {
+				border: 0.5px solid #b1b1b1!important;
+				padding-top: 3px;
+				padding-bottom: 3px;
+				font-size: 0.8em;
+			}
 		</style>
 	</head>
 	<body>
@@ -106,13 +121,20 @@
 					<img id="icon" src="icons/no_favicon.png" alt="Favicon" width=16 height=16>
 					<span id="rawtitle"><span style="opacity: 0.5" data-msg="siteTitlePlaceholder"></span></span>
 				</div>
-				<div class="panel-formElements-item">
+				<div class="panel-formElements-item browser-style">
+					<label for="title" data-msg="popupTiddlerTitleLabel"></label>
+					<input type="text" value="" id="title" />
+				</div>
+				<div class="panel-formElements-item browser-style">
 					<label for="url" data-msg="popupUrlLabel"></label>
 					<input type="text" value="" id="url" />
 				</div>
-				<div class="panel-formElements-item">
-					<label for="title" data-msg="popupTiddlerTitleLabel"></label>
-					<input type="text" value="" id="title" />
+				<div class="panel-formElements-item browser-style dnd" id="tagscontainer">
+					<label for="tags" data-msg="popupTagsLabel"></label>
+					<input type="text" value="" id="tags" />
+				</div>
+				<div class="panel-formElements-item dnd" id="textcontainer">
+					<textarea class="browser-style" id="text" data-msg="popupTiddlerTextLabel"></textarea>
 				</div>
 			</section>
 			<footer class="panel-section panel-section-footer">
@@ -122,8 +144,10 @@
 			</footer>
 		</div>
 		<script src="strings.js"></script>
+		<script src="textarea_autoresize.js"></script>
 		<script src="storage.js"></script>
 		<script src="util.js"></script>
+		<script src="extra_fields.js"></script>
 		<script src="tabs.js"></script>
 		<script src="popup.js"></script>
 	</body>

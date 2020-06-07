@@ -59,8 +59,7 @@ const favicon_req = tab => new Promise((resolve, reject) => {
 });
 
 const tab_reads = (() => {
-	const bsls = (k, v) => browser.storage.local.set({[k]: v}),
-	      field = k => x => x[k],
+	const field = k => x => x[k],
 	      compose = (f, g) => x => f(g(x));
 
 	return {
@@ -71,17 +70,17 @@ const tab_reads = (() => {
 		},
 		rawtitle: {
 			from_tab: field("title"),
-			target: "innerHTML"
+			target: 'innerHTML'
 		},
 		url: {
 			from_tab: field("url"),
 			target: "value",
-			input: bsls
+			input: true
 		},
 		title: {
 			from_tab: compose(scrub, field("title")),
 			target: "value",
-			input: bsls
+			input: true
 		}
 	};
 })();
@@ -90,12 +89,15 @@ const tab_get = (o, r) =>
 	(r !== undefined && o.hasOwnProperty('get')) ? o.get(r) : r;
 
 const tab_read = t => async k => {
-	const o = tab_reads[k];
-	const r = await o.from_tab(t);
+	const o = {...tab_reads, ...field_reads}[k];
+	const r = await (o.hasOwnProperty('from_tab') ? o.from_tab(t) : o.pull());
 	await browser.storage.local.set({[k]: r});
 	return tab_get(o, r);
 };
-const stored_tab = async k => tab_get(tab_reads[k], await local_of(k));
+const stored_tab = async k => tab_get({
+	...tab_reads,
+	...field_reads
+}[k], await local_of(k));
 const current_tab = async () =>
 	 (await browser.tabs.query({
 		currentWindow: true,

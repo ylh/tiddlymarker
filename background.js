@@ -45,8 +45,11 @@ const arg = str => `"${str.split("").map(single =>
 
 const do_bookmark = async () => {
 	const prefs = await browser.storage.sync.get(defaults.sync),
-	      bookmark = await browser.storage.local.get(Object.keys(tab_reads)),
-	      {rawtitle, title, url, icon} = bookmark;
+	      bookmark = await browser.storage.local.get(Object.keys({
+	      	...tab_reads,
+	      	...field_reads
+	      })),
+	      {rawtitle, title, tags, text, url, icon} = bookmark;
 	const creation_error = (error, field) =>
 		error.message.startsWith("Missing host permission") ? {
 			errortitle: msg("permissionErrorTitle"),
@@ -81,10 +84,10 @@ const do_bookmark = async () => {
 				? "undefined"
 				: `JSON.parse(${arg(JSON.stringify(favicon_fmt_out))})`;
 		bookmark_fmt_out = (await browser.tabs.executeScript({
-			code: `((rawtitle, title, url, icon) => {
+			code: `((rawtitle, title, tags, text, url, icon) => {
 				${prefs.bookmark_fmt}
-			})(${arg(rawtitle)}, ${arg(title)}, ${arg(url)},
-			   ${iconarg})`
+			})(${arg(rawtitle)}, ${arg(title)}, ${arg(tags)}, ${arg(text)},
+			   ${arg(url)}, ${iconarg})`
 		}))[0];
 	} catch (e) {
 		return creation_error(e, "bookmark_fmt");
@@ -387,7 +390,10 @@ browser.browserAction.onClicked.addListener(() => {
 		if (!storage_cache.quickmode)
 			break;
 		(async () => {
-			await Promise.all(Object.keys(tab_reads).map(
+			await Promise.all(Object.keys({
+				...tab_reads,
+				...field_reads
+			}).map(
 				tab_read(await current_tab())
 			));
 			storage_cache.state = 'working';

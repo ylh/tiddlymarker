@@ -25,20 +25,20 @@
 					<small class="quickmode greyout" data-msg="quickmodeDesc"></small>
 				</div>
 				<div>
-					<span><input disabled type="checkbox" autocomplete="off" id="careful"></span>
-					<label for="careful" class="greyout" data-msg="carefulLabel"></label>
-				</div>
-				<div>
-					<span></span>
-					<small class="careful greyout" data-msg="carefulDesc"></small>
-				</div>
-				<div>
 					<span><input disabled type="checkbox" autocomplete="off" id="reqfav"></span>
 					<label for="reqfav" class="greyout" data-msg="reqfavLabel"></label>
 				</div>
 				<div>
 					<span></span>
 					<small class="reqfav greyout" data-msg="reqfavDesc"></small>
+				</div>
+				<div>
+					<span><input disabled type="text" autocomplete="off" id="default_tags"></span>
+					<label for="default_tags" class="greyout" data-msg="default_tagsLabel"></label>
+				</div>
+				<div>
+					<span></span>
+					<small class="default_tags greyout" data-msg="default_tagsDesc"></small>
 				</div>
 				<div>
 					<span>
@@ -61,6 +61,33 @@
 							<dd data-msg="savingmode_webserverDesc"></dd>
 						</div>
 					</dl>
+				</div>
+			</section>
+			<section id="popup_prefs" class="greyout">
+				<h2 data-msg="popupHeading"></h2>
+				<div>
+					<span><input disabled type="checkbox" autocomplete="off" id="careful"></span>
+					<label for="careful" class="greyout" data-msg="carefulLabel"></label>
+				</div>
+				<div>
+					<span></span>
+					<small class="careful greyout" data-msg="carefulDesc"></small>
+				</div>
+				<div>
+					<span><input disabled type="checkbox" autocomplete="off" id="show_text"></span>
+					<label for="show_text" class="greyout" data-msg="show_textLabel"></label>
+				</div>
+				<div>
+					<span></span>
+					<small class="show_text greyout" data-msg="show_textDesc"></small>
+				</div>
+				<div>
+					<span><input disabled type="checkbox" autocomplete="off" id="show_tags"></span>
+					<label for="show_tags" class="greyout" data-msg="show_tagsLabel"></label>
+				</div>
+				<div>
+					<span></span>
+					<small class="show_tags greyout" data-msg="show_tagsDesc"></small>
 				</div>
 			</section>
 			<section id="webserver_prefs" class="greyout">
@@ -116,7 +143,7 @@
 				<div>
 					<span></span>
 					<div>
-						<pre class="bookmark_fmt greyout">let bookmark_fmt = (rawtitle, title, url, icon) => {</pre>
+						<pre class="bookmark_fmt greyout">let bookmark_fmt = (rawtitle, title, tags, text, url, icon) => {</pre>
 						<textarea disabled autocomplete="off" id="bookmark_fmt" rows="1"></textarea>
 						<pre class="bookmark_fmt greyout">}</pre>
 						<dl class="bookmark_fmt greyout">
@@ -127,6 +154,14 @@
 							<div>
 								<dt><code>title</code></dt>
 								<dd data-msg="bookmark_fmt_titleDesc"></dd>
+							</div>
+							<div>
+								<dt><code>tags</code></dt>
+								<dd data-msg="bookmark_fmt_tagsDesc"></dd>
+							</div>
+							<div>
+								<dt><code>text</code></dt>
+								<dd data-msg="bookmark_fmt_textDesc"></dd>
 							</div>
 							<div>
 								<dt><code>url</code></dt>
@@ -219,6 +254,7 @@
 			</section>
 		</div>
 		<script src="strings.js"></script>
+		<script src="textarea_autoresize.js"></script>
 		<script src="storage.js"></script>
 		<script src="util.js"></script>
 		<script src="options.js"></script>
