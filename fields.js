@@ -1,25 +1,5 @@
 'use strict';
 
-const scrub = s => s.replace(/[[\]{}|]/g, '');
-
-const byte_flatmap = (f, ab) =>
-	Array.prototype.map.call(new Uint8Array(ab), f).join("");
-const abtobs = ab =>
-	/* don't you just adore optional arguments */
-	byte_flatmap(b => String.fromCharCode(b), ab);
-const abtoh = ab =>
-	byte_flatmap(b => `00${b.toString(16)}`.slice(-2), ab);
-
-const exts = {
-	gif: "gif",
-	png: "png",
-	jpeg: "jpg",
-	['x-icon']: "ico",
-	['vnd.microsoft.icon']: "ico",
-	bmp: "bmp",
-	['svg+xml']: "svg",
-	webp: "webp"
-};
 const favicon_of = async tab => {
 	if (!(await pref_of('reqfav')))
 		return undefined;
@@ -27,6 +7,14 @@ const favicon_of = async tab => {
 };
 
 const favicon_req = tab => new Promise((resolve, reject) => {
+	const byte_flatmap = (f, ab) =>
+		Array.prototype.map.call(new Uint8Array(ab), f).join("");
+	const abtobs = ab =>
+		/* don't you just adore optional arguments */
+		byte_flatmap(b => String.fromCharCode(b), ab);
+	const abtoh = ab =>
+		byte_flatmap(b => `00${b.toString(16)}`.slice(-2), ab);
+
 	let xhr = new XMLHttpRequest();
 
 	xhr.responseType = 'arraybuffer';
@@ -51,13 +39,31 @@ const favicon_req = tab => new Promise((resolve, reject) => {
 			hash: abtoh(await crypto.subtle.digest('SHA-1', this.response)),
 			mime: mime,
 			datauri: `data:${mime}${dc}`,
-			ext: exts[subtype]
+			ext: {
+				gif: "gif",
+				png: "png",
+				jpeg: "jpg",
+				['x-icon']: "ico",
+				['vnd.microsoft.icon']: "ico",
+				bmp: "bmp",
+				['svg+xml']: "svg",
+				webp: "webp"
+			}[subtype]
 		}))();
 	};
 	xhr.onerror = () => resolve(undefined);
 	xhr.send();
 });
 
+
+/* field fields:
+   - from_tab: function of tab by which field is obtained
+   - pull: function of nothing by which field is pulled from thin air
+   - target: property of element in popup to insert into
+   - get: specify something to retrieve from the value to insert into target,
+     if it differs
+   - bypref: whether the corresponding popup field activates according to a pref
+   - input: whether to install an event listener in the popup */
 const field_reads = (() => {
 	const field = k => x => x[k],
 	      compose = (f, g) => x => f(g(x));
@@ -68,7 +74,7 @@ const field_reads = (() => {
 			target: 'innerHTML'
 		},
 		title: {
-			from_tab: compose(scrub, field("title")),
+			from_tab: compose(s => s.replace(/[[\]{}|]/g, ''), field("title")),
 			target: "value",
 			input: true
 		},
@@ -106,8 +112,6 @@ const tab_read = t => async k => {
 	await browser.storage.local.set({[k]: r});
 	return field_get(o, r);
 };
-
-const stored_field = async k => tab_get(field_reads[k], await local_of(k));
 
 const current_tab = async () =>
 	 (await browser.tabs.query({

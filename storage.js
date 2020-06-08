@@ -47,8 +47,11 @@ return o;`,
 	}
 };
 
-const storage_obj = async (a, k) =>
-	await browser.storage[a].get({[k]: defaults[a][k]});
+const storage_all = a =>
+	browser.storage[a].get(defaults[a]);
+
+const storage_obj = (a, k) =>
+	browser.storage[a].get({[k]: defaults[a][k]});
 
 const local_of = async k => (await storage_obj('local', k))[k];
 const pref_of = async k => (await storage_obj('sync', k))[k];

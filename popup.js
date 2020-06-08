@@ -24,9 +24,7 @@ const display = (id, msg) => {
 };
 
 const all_fields = f =>
-	browser.storage.sync.get(
-		defaults.sync
-	).then(prefs =>
+	storage_all('sync').then(prefs =>
 		Promise.all(Object.entries(field_reads).map(async ([k, v]) => {
 			let e = document.getElementById(k);
 			if (!v.hasOwnProperty('bypref')
@@ -47,6 +45,8 @@ const all_fields = f =>
 			}
 		}))
 	);
+
+const stored_field = async k => field_get(field_reads[k], await local_of(k));
 
 (async () => {
 	let f;

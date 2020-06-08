@@ -44,7 +44,7 @@ const arg = str => `"${str.split("").map(single =>
 ).join("")}"`;
 
 const do_bookmark = async () => {
-	const prefs = await browser.storage.sync.get(defaults.sync),
+	const prefs = await storage_all('sync'),
 	      bookmark = await browser.storage.local.get(Object.keys(field_reads)),
 	      {rawtitle, title, tags, text, url, icon} = bookmark;
 	const creation_error = (error, field) =>
@@ -387,6 +387,10 @@ browser.browserAction.onClicked.addListener(() => {
 		if (!storage_cache.quickmode)
 			break;
 		(async () => {
+			/* mind here that the map is for Promise.all - we don't actually
+			   care about the return values once everything is settled, as
+			   they are massaged for popup purposes. meanwhile the full values
+			   are stored regardless */
 			await Promise.all(Object.keys(field_reads).map(
 				tab_read(await current_tab())
 			));
