@@ -111,7 +111,7 @@ const controls = {
 		root: true,
 		pop: pref,
 		activate: rel({
-			download: [],
+			download: ["download_prefs"],
 			webserver: ["webserver_prefs"]
 		})
 	},
@@ -122,6 +122,11 @@ const controls = {
 	careful: ordinary_child,
 	show_text: ordinary_child,
 	show_tags: ordinary_child,
+	download_prefs: {
+		root: false,
+		activate: always(["savebox"])
+	},
+	savebox: ordinary_child,
 	webserver_prefs: {
 		root: false,
 		activate: always(["address", "auth", "safety"])

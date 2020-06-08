@@ -231,11 +231,23 @@
 	"savingmode_webserverDesc": {
 		"message": "Directly adds the appropriate tiddlers to a Node.js TiddlyWiki."
 	},
+	"savingmode_downloadHeading": {
+		"message": "Download Mode"
+	},
+	"saveboxLabel": {
+		"message": "Show Save Dialogue"
+	},
+	"saveboxDesc": {
+		"message": "If you wish to adjust the filename before saving."
+	},
 	"savingmode_webserverHeading": {
 		"message": "Webserver Mode"
 	},
 	"addressLabel": {
 		"message": "Server Address"
+	},
+	"addressDesc": {
+		"message": "Should include protocol and port; i.e. <code>http://localhost:8080</code>"
 	},
 	"authLabel": {
 		"message": "Authentication"

@@ -9,6 +9,7 @@ const defaults = {
 		default_tags: "Bookmark",
 		reqfav: true,
 		savingmode: 'download',
+		savebox: false,
 		address: "",
 		auth: false,
 		username: "",

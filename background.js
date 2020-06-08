@@ -227,7 +227,7 @@ const sends = {
 		try {
 			let id = await browser.downloads.download({
 				url: url,
-				saveAs: true,
+				saveAs: prefs.savebox,
 				filename: bookmark.title.replace(/[^A-Za-z0-9._-]/g, "_")
 				        + ".json"
 			});
