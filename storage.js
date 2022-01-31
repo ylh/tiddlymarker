@@ -16,13 +16,26 @@ const defaults = {
 		password: "",
 		safety: true,
 		bookmark_fmt:
-`let o = {
+`let now = (d => {
+	const pad = (w, i) => ("0".repeat(w) + i).slice(-w);
+	return pad(4, d.getUTCFullYear())
+	     + pad(2, d.getUTCMonth() + 1)
+	     + pad(2, d.getUTCDate())
+	     + pad(2, d.getUTCHours())
+	     + pad(2, d.getUTCMinutes())
+	     + pad(2, d.getUTCSeconds())
+	     + pad(3, d.getUTCMilliseconds());
+})(new Date());
+
+let o = {
 	title: title,
 	tags: tags,
 	text: text,
 	fields: {
 		rawtitle: rawtitle,
-		link: url
+		link: url,
+		created: now,
+		modified: now
 	}
 };
 
