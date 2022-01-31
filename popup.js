@@ -18,7 +18,7 @@ document.getElementById("cancel").addEventListener('click', async () => {
 const display = (id, msg) => {
 	let e = document.getElementById(id);
 	if (msg !== undefined) {
-		e.children[0].innerHTML = msg;
+		e.children[0].innerText = msg;
 	}
 	e.classList.remove("dnd");
 };

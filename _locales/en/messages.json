@@ -59,7 +59,7 @@
 	"putTiddlerPhrase": {
 		"message": "put $TYPE$ tiddler",
 		"placeholders": {
-			"action": {
+			"type": {
 				"content": "$1"
 			}
 		}
@@ -67,7 +67,7 @@
 	"checkTiddlerPhrase": {
 		"message": "check for $TYPE$ tiddler",
 		"placeholders": {
-			"action": {
+			"type": {
 				"content": "$1"
 			}
 		}
